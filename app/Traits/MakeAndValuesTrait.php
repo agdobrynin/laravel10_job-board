@@ -10,7 +10,7 @@ trait MakeAndValuesTrait
         return array_column(static::cases(), 'value');
     }
 
-    public static function make(string $value): static
+    public static function make(string $value): ?static
     {
         foreach (static::cases() as $case) {
             if ($case->value === $value) {
@@ -18,6 +18,6 @@ trait MakeAndValuesTrait
             }
         }
 
-        throw new \LogicException('Enum value ' . $value . ' not support');
+        return null;
     }
 }

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return redirect()->route('vacancies.index');
-});
+Route::get('/', fn () => to_route('vacancies.index'));
 
 Route::resource('vacancies', VacancyController::class)
-    ->only(['index']);
+    ->only(['index', 'show']);

@@ -12,7 +12,7 @@ class VacancyController extends Controller
      */
     public function index()
     {
-        return view('vacancy.index');
+        return view('vacancies.index', ['vacancies' => Vacancy::all()]);
     }
 
     /**
@@ -34,9 +34,9 @@ class VacancyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Vacancy $job)
+    public function show(Vacancy $vacancy)
     {
-        //
+        return view('vacancies.show', compact('vacancy'));
     }
 
     /**
