@@ -22,7 +22,7 @@
     @endforeach
     @error($name)
     <div class="mt-1 text-xs text-red-500">
-        <p>Choose value: {{ \Illuminate\Support\Str::ucfirst(old($name)) }}</p>
+        <p>Choose value: {{ old($name) }}</p>
         {{ $message }}
     </div>
     @enderror
