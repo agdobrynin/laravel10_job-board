@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Contracts\GroupBoxEnumInterface;
 use App\Enums\VacancyExperienceEnum;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\TestCase;
@@ -12,7 +13,10 @@ class VacancyExperienceEnumTest extends TestCase
      */
     public function test_make_in_trait(string $value): void
     {
-        $this->assertTrue(VacancyExperienceEnum::make($value) instanceof VacancyExperienceEnum);
+        $enum = VacancyExperienceEnum::make($value);
+        $this->assertTrue($enum instanceof VacancyExperienceEnum);
+        $this->assertInstanceOf(GroupBoxEnumInterface::class, $enum);
+        $this->assertEquals(Str::ucfirst($enum->value), $enum->label());
     }
 
     public static function data(): \Generator

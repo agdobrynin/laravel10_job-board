@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\FilterVacancyDto;
+use App\Http\Requests\VacanciesIndexRequest;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
 
@@ -10,9 +12,12 @@ class VacancyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(VacanciesIndexRequest $request)
     {
-        return view('vacancies.index', ['vacancies' => Vacancy::all()]);
+        $dto = new FilterVacancyDto(...$request->validated());
+        $vacancies = Vacancy::filter($dto);
+
+        return view('vacancies.index', ['vacancies' => $vacancies->get()]);
     }
 
     /**

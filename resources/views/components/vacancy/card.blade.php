@@ -1,5 +1,7 @@
 @props([
     'vacancy',
+    /*Named slot description*/
+    'description' => null,
     /*Named slot footer*/
     'footer' => null,
 ])
@@ -18,7 +20,9 @@
             <x-ui.tag>{{ Str::upper($vacancy->category) }}</x-ui.tag>
         </div>
     </div>
-    <p class="mb-4 text-sm text-slate-500">{!! nl2br(e($vacancy->description)) !!}</p>
+    @if($description)
+        <p {{ $description->attributes->class(['mb-4 text-sm text-slate-500']) }}>{{ $description }}</p>
+    @endif
     @if($footer)
         <div {{ $footer->attributes->class(['']) }}>
             {{ $footer }}

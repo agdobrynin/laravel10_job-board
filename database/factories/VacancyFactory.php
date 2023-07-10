@@ -18,13 +18,31 @@ class VacancyFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var VacancyCategoryEnum $category */
+        $category = fake()->randomElement(VacancyCategoryEnum::cases());
+        /** @var VacancyExperienceEnum $experience */
+        $experience = fake()->randomElement(VacancyExperienceEnum::cases());
+
+        $salaryMin = 3_000;
+        $salaryMax = 7_000;
+
+        if ($category === VacancyCategoryEnum::IT) {
+            $salaryMin = match ($experience) {
+                VacancyExperienceEnum::JUNIOR => 4_500,
+                VacancyExperienceEnum::MIDDLE => 7_000,
+                VacancyExperienceEnum::SENIOR => 10_000,
+            };
+
+            $salaryMax = $salaryMin + rand(1_000, 7_000);
+        }
+
         return [
             'title' => fake()->jobTitle,
             'description' => fake()->paragraphs(rand(3, 6), true),
-            'salary' => fake()->numberBetween(5_000, 10_000),
+            'salary' => fake()->numberBetween($salaryMin, $salaryMax),
             'location' => fake()->city,
-            'category' => fake()->randomElement(VacancyCategoryEnum::values()),
-            'experience' => fake()->randomElement(VacancyExperienceEnum::values()),
+            'category' => $category->value,
+            'experience' => $experience->value,
         ];
     }
 }
