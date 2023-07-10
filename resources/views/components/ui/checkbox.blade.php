@@ -3,6 +3,7 @@
     'type',
     'name',
     'value',
+    'checked',
     'label',
     'showError'
 ])
