@@ -20,15 +20,13 @@ class Vacancy extends Model
     {
         return $builder->when(
             $dto->search,
-            function (Builder $query) use ($dto) {
-                $query->where(function (Builder $query) use ($dto) {
-                    $likeOperator = $query->getConnection() instanceof PostgresConnection
-                        ? 'ilike'
-                        : 'like';
+            function (Builder $query, string $search) {
+                $likeOperator = $query->getConnection() instanceof PostgresConnection
+                    ? 'ilike'
+                    : 'like';
 
-                    return $query->where('title', $likeOperator, "%{$dto->search}%")
-                        ->orWhere('description', $likeOperator, "%{$dto->search}%");
-                });
+                $query->where(fn(Builder $query) => $query->where('title', $likeOperator, "%{$search}%")
+                    ->orWhere('description', $likeOperator, "%{$search}%"));
             }
         )
             ->when(
