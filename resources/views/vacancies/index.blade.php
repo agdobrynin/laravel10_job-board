@@ -13,9 +13,9 @@
                 <div>
                     <div class="font-semibold mb-1">Salary</div>
                     <div class="flex space-x-2">
-                        <x-ui.input type="number" name="salary_min" :value="old('salary_min', request('salary_min'))"
+                        <x-ui.input name="salary_min" :value="old('salary_min', request('salary_min'))"
                                     placeholder="From"/>
-                        <x-ui.input type="number" name="salary_max" :value="old('salary_max', request('salary_max'))"
+                        <x-ui.input name="salary_max" :value="old('salary_max', request('salary_max'))"
                                     placeholder="To"/>
                     </div>
                 </div>
