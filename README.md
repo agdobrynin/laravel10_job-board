@@ -15,7 +15,7 @@
 ---
 
 - 🐘 Php 8.2 + Laravel 10
-- 🌊 Tailwind CSS + Blade templates
+- 🌊 Tailwind CSS + Blade templates + AlpineJs
 - 🐘 Postgres 15
 - 🐳 Docker (Docker compose) + Laravel Sail
 - ⛑ Тестирование PHPUnit
