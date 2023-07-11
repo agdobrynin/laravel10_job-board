@@ -12,14 +12,19 @@ readonly class FilterVacancyDto
     public ?VacancyCategoryEnum $category;
 
     public function __construct(
-        public ?string $search = null,
-        public ?int    $salary_min = null,
-        public ?int    $salary_max = null,
-        ?string        $experience = null,
-        ?string        $category = null,
+        public ?string               $search = null,
+        public ?int                  $salary_min = null,
+        public ?int                  $salary_max = null,
+        string|VacancyExperienceEnum $experience = null,
+        string|VacancyCategoryEnum   $category = null,
     )
     {
-        $this->experience = VacancyExperienceEnum::make($experience ?: '');
-        $this->category = VacancyCategoryEnum::make($category ?: '');
+        $experience instanceof VacancyExperienceEnum
+            ? $this->experience = $experience
+            : $this->experience = VacancyExperienceEnum::make($experience ?: '');
+
+        $category instanceof VacancyCategoryEnum
+            ? $this->category = $category
+            : $this->category = VacancyCategoryEnum::make($category ?: '');
     }
 }
