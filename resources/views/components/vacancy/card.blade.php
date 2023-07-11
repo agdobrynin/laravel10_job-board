@@ -16,12 +16,12 @@
             <div>{{ $vacancy->location }}</div>
         </div>
         <div class="flex space-x-1 text-xs">
-            <x-ui.tag>
+            <x-ui.tag class="hover:text-red-600 hover:shadow">
                 <a href="{{ route('vacancies.index', [...request()->query(), 'experience' => $vacancy->experience]) }}">
-                    {{ Str::ucfirst($vacancy->experience) }}
+                    {{ Str::upper($vacancy->experience) }}
                 </a>
             </x-ui.tag>
-            <x-ui.tag>
+            <x-ui.tag class="hover:text-indigo-600 hover:shadow">
                 <a href="{{ route('vacancies.index', [...request()->query(), 'category' => $vacancy->category]) }}">
                     {{ Str::upper($vacancy->category) }}
                 </a>
