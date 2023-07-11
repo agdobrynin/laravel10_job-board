@@ -16,8 +16,16 @@
             <div>{{ $vacancy->location }}</div>
         </div>
         <div class="flex space-x-1 text-xs">
-            <x-ui.tag>{{ Str::ucfirst($vacancy->experience) }}</x-ui.tag>
-            <x-ui.tag>{{ Str::upper($vacancy->category) }}</x-ui.tag>
+            <x-ui.tag>
+                <a href="{{ route('vacancies.index', [...request()->query(), 'experience' => $vacancy->experience]) }}">
+                    {{ Str::ucfirst($vacancy->experience) }}
+                </a>
+            </x-ui.tag>
+            <x-ui.tag>
+                <a href="{{ route('vacancies.index', [...request()->query(), 'category' => $vacancy->category]) }}">
+                    {{ Str::upper($vacancy->category) }}
+                </a>
+            </x-ui.tag>
         </div>
     </div>
     @if($description)
