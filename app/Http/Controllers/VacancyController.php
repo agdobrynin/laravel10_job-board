@@ -15,7 +15,7 @@ class VacancyController extends Controller
     public function index(VacanciesIndexRequest $request)
     {
         $dto = new FilterVacancyDto(...$request->validated());
-        $perPage = config('app.paginator.'.self::class.'.index');
+        $perPage = config('app.paginator.vacancies.list');
 
         $vacancies = Vacancy::with('employer')
             ->filter($dto)
@@ -46,7 +46,7 @@ class VacancyController extends Controller
      */
     public function show(Vacancy $vacancy)
     {
-        $perPage = config('app.paginator.'.static::class.'.show');
+        $perPage = config('app.paginator.vacancies.employer.vacancies');
 
         $otherVacancies = $vacancy->employer()
             ->firstOrFail()

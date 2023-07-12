@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -187,9 +186,11 @@ return [
     ])->toArray(),
 
     'paginator' => [
-        VacancyController::class => [
-            'index' => env('PAGINATOR_VACANCY_CONTROLLER_INDEX', 10),
-            'show' => env('PAGINATOR_VACANCY_CONTROLLER_SHOW', 5),
+        'vacancies' => [
+            'list' => env('PAGINATOR_VACANCIES_LIST', 10),
+            'employer' => [
+                'vacancies' => env('PAGINATOR_VACANCIES_EMPLOYER_VACANCIES', 5),
+            ],
         ]
     ]
 
