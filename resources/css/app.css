@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.link {
+    @apply underline underline-offset-2 hover:text-indigo-700 hover:shadow-lg;
+}

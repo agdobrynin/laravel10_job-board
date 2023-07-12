@@ -41,7 +41,7 @@ class VacancyController extends Controller
      */
     public function show(Vacancy $vacancy)
     {
-        $vacancy->loadMissing('employer');
+        $vacancy->loadMissing('employer.vacancies');
 
         return view('vacancies.show', compact('vacancy'));
     }
