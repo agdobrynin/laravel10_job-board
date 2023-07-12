@@ -15,7 +15,7 @@ class VacancyController extends Controller
     public function index(VacanciesIndexRequest $request)
     {
         $dto = new FilterVacancyDto(...$request->validated());
-        $vacancies = Vacancy::filter($dto);
+        $vacancies = Vacancy::with('employer')->filter($dto);
 
         return view('vacancies.index', ['vacancies' => $vacancies->get()]);
     }
@@ -41,6 +41,8 @@ class VacancyController extends Controller
      */
     public function show(Vacancy $vacancy)
     {
+        $vacancy->loadMissing('employer');
+
         return view('vacancies.show', compact('vacancy'));
     }
 

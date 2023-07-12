@@ -12,8 +12,8 @@
     </div>
     <div class="mb-4 flex items-center justify-between text-sm text-slate-500">
         <div class="flex space-x-4">
-            <div>Company name</div>
-            <div>{{ $vacancy->location }}</div>
+            <div>Employer: <span class="font-semibold text-emerald-500">{{ $vacancy->employer->name }}</span></div>
+            <div>Location: <span class="font-semibold text-emerald-500">{{ $vacancy->location }}</span></div>
         </div>
         <div class="flex space-x-1 text-xs">
             <x-ui.tag class="hover:text-red-600 hover:shadow">

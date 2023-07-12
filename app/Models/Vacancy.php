@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\PostgresConnection;
 
 class Vacancy extends Model
@@ -14,7 +15,17 @@ class Vacancy extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'description', 'salary', 'location', 'category', 'experience'];
+
+
+    protected $casts = [
+        'salary' => 'integer',
+    ];
+
+    public function employer(): BelongsTo
+    {
+        return $this->belongsTo(Employer::class);
+    }
 
     public function scopeFilter(Builder $builder, FilterVacancyDto $dto): Builder
     {
@@ -25,8 +36,13 @@ class Vacancy extends Model
                     ? 'ilike'
                     : 'like';
 
-                $query->where(fn(Builder $query) => $query->where('title', $likeOperator, "%{$search}%")
-                    ->orWhere('description', $likeOperator, "%{$search}%"));
+                $query->where(function (Builder $query) use ($search, $likeOperator) {
+                    $query->where('title', $likeOperator, "%{$search}%")
+                        ->orWhere('description', $likeOperator, "%{$search}%")
+                        ->orWhereHas('employer', function (Builder $query) use ($search, $likeOperator) {
+                            $query->where('name', $likeOperator, "%{$search}%");
+                        });
+                });
             }
         )
             ->when(
@@ -43,7 +59,9 @@ class Vacancy extends Model
             )
             ->when(
                 $dto->experience,
-                fn(Builder $query) => $query->where('experience', $dto->experience->value)
+                function ($query, $value) {
+                    $query->where('experience', $value);
+                }
             );
     }
 }
