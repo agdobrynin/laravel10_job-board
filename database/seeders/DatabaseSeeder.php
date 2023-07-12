@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Employer::factory(10)
+        Employer::factory(15)
             ->for(
                 User::factory()->create()
             )
@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             ->each(function (Employer $employer) {
                 $employer->vacancies()
                     ->saveMany(
-                        Vacancy::factory(rand(3, 12))->make()
+                        Vacancy::factory(rand(6, 25))->make()
                     );
             });
     }

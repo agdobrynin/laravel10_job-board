@@ -8,11 +8,18 @@
         </x-slot:description>
     </x-vacancy.card>
 
-    @if($vacancy->employer->vacancies->count())
+    @if($otherVacancies->count())
         <x-ui.card class="mt-4">
             <h2 class="text-2xl mb-4">Other vacancies from &laquo;{{ $vacancy->employer->name }}&raquo;</h2>
             <div class="text-sm text-slate-500">
-                @foreach($vacancy->employer->vacancies as $otherVacancy)
+
+                @if($otherVacancies->hasPages())
+                    <div class="mb-4">
+                        {{ $otherVacancies->onEachSide(1)->links() }}
+                    </div>
+                @endif
+
+                @foreach($otherVacancies as $otherVacancy)
                     <div class="mb-4 flex justify-between">
                         <div>
                             <div class="text-slate-700">
@@ -27,6 +34,12 @@
                         <div>${{ number_format($otherVacancy->salary) }}</div>
                     </div>
                 @endforeach
+
+                @if($otherVacancies->hasPages())
+                    <div class="mb-4">
+                        {{ $otherVacancies->onEachSide(1)->links() }}
+                    </div>
+                @endif
             </div>
         </x-ui.card>
     @endif

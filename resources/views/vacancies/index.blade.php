@@ -42,6 +42,12 @@
         </form>
     </x-ui.card>
 
+    @if($vacancies->hasPages())
+        <div class="mb-4">
+            {{ $vacancies->onEachSide(1)->links() }}
+        </div>
+    @endif
+
     @forelse($vacancies as $vacancy)
         <x-vacancy.card class="mb-4" :$vacancy>
             <x-slot:footer class="pt-4">
@@ -55,4 +61,8 @@
             Not found vacancies
         </x-ui.card>
     @endforelse
+
+    <div class="mb-4">
+        {{ $vacancies->onEachSide(1)->links() }}
+    </div>
 </x-layouts.app>
