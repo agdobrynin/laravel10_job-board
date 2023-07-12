@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,7 +43,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -184,5 +185,12 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
+
+    'paginator' => [
+        VacancyController::class => [
+            'index' => env('PAGINATOR_VACANCY_CONTROLLER_INDEX', 10),
+            'show' => env('PAGINATOR_VACANCY_CONTROLLER_SHOW', 5),
+        ]
+    ]
 
 ];

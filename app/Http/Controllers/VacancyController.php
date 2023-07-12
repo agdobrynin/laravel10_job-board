@@ -15,9 +15,11 @@ class VacancyController extends Controller
     public function index(VacanciesIndexRequest $request)
     {
         $dto = new FilterVacancyDto(...$request->validated());
+        $perPage = config('app.paginator.'.self::class.'.index');
+
         $vacancies = Vacancy::with('employer')
             ->filter($dto)
-            ->paginate()
+            ->paginate($perPage)
             ->withQueryString();
 
         return view('vacancies.index', ['vacancies' => $vacancies]);
@@ -44,10 +46,12 @@ class VacancyController extends Controller
      */
     public function show(Vacancy $vacancy)
     {
+        $perPage = config('app.paginator.'.static::class.'.show');
+
         $otherVacancies = $vacancy->employer()
             ->firstOrFail()
             ->vacancies()
-            ->paginate();
+            ->paginate($perPage);
 
         return view('vacancies.show', compact(['vacancy', 'otherVacancies']));
     }
