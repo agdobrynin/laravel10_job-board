@@ -50,10 +50,13 @@
 
     @forelse($vacancies as $vacancy)
         <x-vacancy.card class="mb-4" :$vacancy>
-            <x-slot:footer class="pt-4">
+            <x-slot:footer class="pt-4 flex justify-between items-center">
                 <x-ui.link-button href="{{ route('vacancies.show', $vacancy) }}">
                     Show
                 </x-ui.link-button>
+                <div class="text-sm text-slate-400">
+                    {{ $vacancy->created_at->diffForHumans() }}
+                </div>
             </x-slot:footer>
         </x-vacancy.card>
     @empty
