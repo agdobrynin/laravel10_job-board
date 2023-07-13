@@ -1,7 +1,7 @@
 <x-layouts.app pageTitle="Vacancies list">
     <x-ui.breadcrumbs
         class="mb-4"
-        :links="['Home' => '/', 'Vacancies' => null]"/>
+        :links="['Vacancies' => null]"/>
 
     <x-ui.card class="mb-4 text-sm">
         <form action="{{ route('vacancies.index') }}" method="get">
