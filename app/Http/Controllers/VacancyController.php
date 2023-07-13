@@ -19,6 +19,7 @@ class VacancyController extends Controller
 
         $vacancies = Vacancy::with('employer')
             ->filter($dto)
+            ->latest()
             ->paginate($perPage)
             ->withQueryString();
 
@@ -51,6 +52,7 @@ class VacancyController extends Controller
         $otherVacancies = $vacancy->employer()
             ->firstOrFail()
             ->vacancies()
+            ->latest()
             ->paginate($perPage);
 
         return view('vacancies.show', compact(['vacancy', 'otherVacancies']));

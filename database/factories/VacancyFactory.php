@@ -36,6 +36,8 @@ class VacancyFactory extends Factory
             $salaryMax = $salaryMin + rand(1_000, 7_000);
         }
 
+        $createdAt = fake()->dateTimeBetween('-2 months');
+
         return [
             'title' => fake()->jobTitle,
             'description' => fake()->paragraphs(rand(3, 6), true),
@@ -43,6 +45,8 @@ class VacancyFactory extends Factory
             'location' => fake()->city,
             'category' => $category->value,
             'experience' => $experience->value,
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }
