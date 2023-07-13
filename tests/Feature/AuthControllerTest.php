@@ -89,10 +89,10 @@ class AuthControllerTest extends TestCase
         $response = $this->from('/auth')
             ->post('/auth', ['email' => 'ivan@mail.com', 'password' => 'password'])
             ->assertRedirect('/auth')
-            ->assertSessionHas('error', 'Invalid credentials');
+            ->assertSessionHas('error', trans('Invalid credentials'));
 
         $this->followRedirects($response)
-            ->assertSee('Invalid credentials');
+            ->assertSee(trans('Invalid credentials'));
 
         $this->assertNull(Auth::user());
 
