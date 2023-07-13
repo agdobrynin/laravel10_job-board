@@ -52,6 +52,7 @@ class VacancyController extends Controller
         $otherVacancies = $vacancy->employer()
             ->firstOrFail()
             ->vacancies()
+            ->where('id', '!=', $vacancy->id)
             ->latest()
             ->paginate($perPage);
 
