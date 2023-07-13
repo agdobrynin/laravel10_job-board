@@ -21,12 +21,12 @@ class AuthControllerTest extends TestCase
     {
         yield 'is empty fields' => [
             [],
-            ['email' => 'The email field is required.', 'password' => 'The password field is required.']
+            ['email' => 'required', 'password' => 'required']
         ];
 
         yield 'invalid email' => [
             ['email' => 'abc', 'password' => 'pass'],
-            ['email' => 'The email field must be a valid email address.']
+            ['email' => 'email']
         ];
     }
 
@@ -55,12 +55,12 @@ class AuthControllerTest extends TestCase
     /**
      * @dataProvider data4Validate
      */
-    public function test_validate_form(array $data, array $errors): void
+    public function test_validate_form(array $data, array $invald): void
     {
         $this->from('/auth')
             ->post('/auth', $data)
             ->assertRedirect('/auth')
-            ->assertSessionHasErrors($errors);
+            ->assertInvalid($invald);
     }
 
     public function test_auth_success(): void
