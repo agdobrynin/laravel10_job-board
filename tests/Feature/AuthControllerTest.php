@@ -55,12 +55,12 @@ class AuthControllerTest extends TestCase
     /**
      * @dataProvider data4Validate
      */
-    public function test_validate_form(array $data, array $invald): void
+    public function test_validate_form(array $data, array $invalid): void
     {
         $this->from('/auth')
             ->post('/auth', $data)
             ->assertRedirect('/auth')
-            ->assertInvalid($invald);
+            ->assertInvalid($invalid);
     }
 
     public function test_auth_success(): void

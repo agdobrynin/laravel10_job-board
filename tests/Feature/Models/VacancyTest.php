@@ -196,7 +196,7 @@ class VacancyTest extends TestCase
         $this->assertEquals(1_500, $vacancies->getIterator()->offsetGet(0)->salary);
     }
 
-    public function test_scope_filter_by_employer_name_and_vacncy_category(): void
+    public function test_scope_filter_by_employer_name_and_vacancy_category(): void
     {
         Employer::factory(['name' => 'The Google Inc at USA'])
             ->for(User::factory()->create())
