@@ -35,7 +35,7 @@
         </nav>
 
         @if (session('error'))
-            <x-ui.alert-error>
+            <x-ui.alert-error class="shadow-md hover:shadow-lg">
                 <x-slot:header>Error!</x-slot:header>
                 <p>{{ session('error') }}</p>
             </x-ui.alert-error>
