@@ -28,5 +28,9 @@ class DatabaseSeeder extends Seeder
                         Vacancy::factory(rand(0, 20))->make()
                     );
             });
+
+        User::factory(2)
+            ->sequence(['email' => 'user1@example.net'], ['email' => 'user2@example.net'])
+            ->create();
     }
 }
