@@ -24,10 +24,11 @@ Route::get('login', fn() => to_route('auth.create'))
     ->name('login');
 
 Route::resource('auth', AuthController::class)
-    ->only(['create', 'store', 'destroy']);
+    ->only(['create', 'store']);
 // redirect to custom auth controller
 Route::delete('logout', fn() => to_route('auth.destroy'))
     ->name('logout');
 
 Route::delete('auth', [AuthController::class, 'destroy'])
+    ->middleware('auth')
     ->name('auth.destroy');
