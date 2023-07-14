@@ -36,10 +36,18 @@
 
         @if (session('error'))
             <x-ui.alert-error class="shadow-md hover:shadow-lg">
-                <x-slot:header>Error!</x-slot:header>
+                <x-slot:header>Error action!</x-slot:header>
                 <p>{{ session('error') }}</p>
             </x-ui.alert-error>
         @endif
+
+        @if (session('success'))
+            <x-ui.alert-success class="shadow-md hover:shadow-lg">
+                <x-slot:header>Success action!</x-slot:header>
+                <p>{{ session('success') }}</p>
+            </x-ui.alert-success>
+        @endif
+
         {{ $slot }}
     </body>
 </html>
