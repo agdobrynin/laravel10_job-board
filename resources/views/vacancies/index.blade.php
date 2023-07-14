@@ -8,15 +8,15 @@
             <div class="mb-4 grid grid-cols-2 gap-4">
                 <div>
                     <x-ui.input name="search" label="Search" :value="old('search', request('search'))"
-                                placeholder="Search text"/>
+                                placeholder="Search text" :clearAndSubmit="true"/>
                 </div>
                 <div>
-                    <div class="font-semibold mb-1">Salary</div>
+                    <div class="font-semibold mb-2">Salary</div>
                     <div class="flex space-x-2">
                         <x-ui.input name="salary_min" :value="old('salary_min', request('salary_min'))"
-                                    placeholder="From"/>
+                                    placeholder="From" :clearAndSubmit="true"/>
                         <x-ui.input name="salary_max" :value="old('salary_max', request('salary_max'))"
-                                    placeholder="To"/>
+                                    placeholder="To" :clearAndSubmit="true"/>
                     </div>
                 </div>
                 <div>

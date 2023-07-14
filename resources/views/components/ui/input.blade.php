@@ -5,28 +5,39 @@
     'label' => '',
     'type' => 'text',
     'clearBtn' => true,
+    'clearAndSubmit' => false,
+    'id' => Str::uuid(),
 ])
-<label
-    x-init="val = '{{$value}}'; hasError = Boolean({{ $errors->has($name) }})"
+<div
+    x-init="val = '{{$value}}'; hasError = Boolean({{ $errors->has($name) }}); clearAndSubmit = Boolean({{ $clearAndSubmit }})"
     x-data="{
+        clearAndSubmit: false,
+
         val: '',
+
         hasError: false,
-        clear() {
-            this.$refs.input.value = '';
-        },
-        submit() {
-            this.$refs.input.form?.submit();
-        },
+
+        clear(withSubmit) {
+            this.val = '';
+            this.hasError = false;
+
+            if (withSubmit) {
+                this.$refs.input.value = '';
+                this.$refs.input.form?.submit();
+            }
+        }
     }"
 >
-    @if($label)<div class="font-semibold mb-1 ms-1">{{ $label }}</div>@endif
+    @if($label)
+        <label class="font-semibold mb-2 ms-1 block cursor-pointer" for="{{$id}}">{{ $label }}</label>
+    @endif
     <div class="relative">
         @if($clearBtn)
             <button
                 x-show="val.length"
                 type="button"
                 class="absolute top-0 right-0 flex h-full items-center pr-2"
-                x-on:click="clear(); submit();">
+                x-on:click="clear(clearAndSubmit)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="h-4 w-4 text-slate-500">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -34,6 +45,7 @@
             </button>
         @endif
         <input type="{{ $type }}"
+               id="{{$id}}"
                x-ref="input"
                x-model="val"
                x-on:input="hasError = false"
@@ -52,4 +64,4 @@
             {{ $message }}
         </div>
     @enderror
-</label>
+</div>
