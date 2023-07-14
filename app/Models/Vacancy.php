@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\PostgresConnection;
 
 class Vacancy extends Model
@@ -25,6 +26,11 @@ class Vacancy extends Model
     public function employer(): BelongsTo
     {
         return $this->belongsTo(Employer::class);
+    }
+
+    public function vacancyApplications(): HasMany
+    {
+        return $this->hasMany(VacancyApplication::class);
     }
 
     public function scopeFilter(Builder $builder, FilterVacancyDto $dto): Builder

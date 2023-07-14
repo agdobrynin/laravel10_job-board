@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Employer;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Models\VacancyApplication;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,8 +30,14 @@ class DatabaseSeeder extends Seeder
                     );
             });
 
+        $vacancies = Vacancy::all();
+
         User::factory(2)
             ->sequence(['email' => 'user1@example.net'], ['email' => 'user2@example.net'])
+            ->has(
+                VacancyApplication::factory(6)
+                    ->sequence(fn() => ['vacancy_id' => $vacancies->random()->id])
+            )
             ->create();
     }
 }
