@@ -48,7 +48,7 @@
         </x-vacancy.card>
     @empty
         <x-ui.card>
-            <h3 class="mb-4 text-xl text-slate-700">Applications to vacancies not found.</h3>
+            <h3 class="mb-4 text-xl text-center text-slate-700">Applications to vacancies not found.</h3>
             <div class="text-center">
                 Go find some vacancies <a class="link" href="{{ route('vacancies.index') }}">here!</a>
             </div>
