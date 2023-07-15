@@ -191,7 +191,10 @@ return [
             'employer' => [
                 'vacancies' => env('PAGINATOR_VACANCIES_EMPLOYER_VACANCIES', 5),
             ],
-        ]
+        ],
+        'my_vacancy_applications' => [
+            'list' => env('PAGINATOR_MY_VACANCY_APPLICATIONS', 5)
+        ],
     ]
 
 ];

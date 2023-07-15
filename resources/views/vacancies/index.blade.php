@@ -38,7 +38,7 @@
                     />
                 </div>
             </div>
-            <x-ui.button class="w-full">Filter</x-ui.button>
+            <x-ui.button class="w-full" type="submit">Filter</x-ui.button>
         </form>
     </x-ui.card>
 

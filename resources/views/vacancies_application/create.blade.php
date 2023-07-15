@@ -20,7 +20,7 @@
                         value="{{ old('expect_salary', '') }}"
                         label="Expected Salary"/>
 
-            <x-ui.button class="w-full mt-4">Apply</x-ui.button>
+            <x-ui.button type="submit" class="w-full mt-4">Apply</x-ui.button>
         </form>
     </x-ui.card>
 </x-layouts.app>

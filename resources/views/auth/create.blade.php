@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div>
-                    <x-ui.button>🔑 Do login</x-ui.button>
+                    <x-ui.button type="submit">🔑 Do login</x-ui.button>
                 </div>
             </div>
         </form>

@@ -164,8 +164,4 @@ class VacancyApplicationControllerTest extends TestCase
             $this->assertDatabaseHas(VacancyApplication::class, [...$databaseSet, ...$data]);
         }
     }
-
-    public function test_destroy(): void
-    {
-    }
 }

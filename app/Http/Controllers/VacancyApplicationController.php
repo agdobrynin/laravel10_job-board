@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\VacancyApplicationStoreRequest;
 use App\Models\Vacancy;
-use App\Models\VacancyApplication;
 
 class VacancyApplicationController extends Controller
 {
@@ -26,13 +25,5 @@ class VacancyApplicationController extends Controller
 
         return redirect()->route('vacancies.show', $vacancy)
             ->with('success', 'You apply to this vacancy.');
-    }
-
-
-    public function destroy(string $vacancyUuid, VacancyApplication $application)
-    {
-        $application->delete();
-
-        return back()->with('success', 'Vacancy application was deleted.');
     }
 }

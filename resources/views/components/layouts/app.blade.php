@@ -10,25 +10,27 @@
         <nav class="mb-4 flex justify-between text-lg font-medium">
             <ul class="flex space-x-2">
                 <li>
-                    <a href="{{ route('vacancies.index') }}">Home</a>
+                    <a class="link" href="{{ route('vacancies.index') }}">Home</a>
                 </li>
             </ul>
 
             <ul class="flex space-x-2">
                 @auth
                     <li>
-                        {{ auth()->user()->name ?? 'Guest' }}
+                        <a class="link" href="{{ route('my-vacancy-applications.index') }}">
+                            {{ auth()->user()->name ?? 'Guest' }}
+                        </a>
                     </li>
                     <li>
                         <form action="{{ route('auth.destroy') }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button>Logout</button>
+                            <button class="link">Logout</button>
                         </form>
                     </li>
                 @else
                     <li>
-                        <a href="{{ route('auth.create') }}">Sign in</a>
+                        <a class="link" href="{{ route('auth.create') }}">Sign in</a>
                     </li>
                 @endauth
             </ul>
