@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VacancyApplicationController;
 use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,10 @@ Route::resource('auth', AuthController::class)
 Route::delete('logout', fn() => to_route('auth.destroy'))
     ->name('logout');
 
-Route::delete('auth', [AuthController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('auth.destroy');
+Route::middleware('auth')->group(function () {
+    Route::delete('auth', [AuthController::class, 'destroy'])
+        ->name('auth.destroy');
+
+    Route::resource('vacancies.application', VacancyApplicationController::class)
+        ->only(['create', 'store', 'destroy']);
+});

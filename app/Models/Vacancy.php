@@ -70,4 +70,14 @@ class Vacancy extends Model
                 }
             );
     }
+
+    public function hasUserVacancyApplication(User|string $user): bool
+    {
+        return $this->where('id', $this->id)
+            ->whereHas(
+                'vacancyApplications',
+                fn(Builder $builder) => $builder->where('user_id', $user->id ?? $user)
+            )
+            ->exists();
+    }
 }

@@ -6,6 +6,20 @@
         <x-slot:description>
             {!! nl2br(e($vacancy->description)) !!}
         </x-slot:description>
+
+        <x-slot:footer>
+            @cannot('apply', $vacancy)
+                <div class="text-center text-sm font-medium text-slate-500">
+                    You already applied to this vacancy
+                </div>
+            @else
+                <div class="mt-6 text-end">
+                    <x-ui.link-button :href="route('vacancies.application.create', $vacancy)">
+                        📝 Offer yourself
+                    </x-ui.link-button>
+                </div>
+            @endcan
+        </x-slot:footer>
     </x-vacancy.card>
 
     @if($otherVacancies->count())

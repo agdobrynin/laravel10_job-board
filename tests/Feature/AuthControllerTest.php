@@ -44,9 +44,9 @@ class AuthControllerTest extends TestCase
 
         $response->assertSeeInOrder([
             '<title>Job bord App | Do Sign In </title>',
-            '>Email</div>',
+            '>Email</label>',
             'name="email"',
-            '>Password</div>',
+            '>Password</label>',
             'name="password"',
             'Forget password?',
         ], false);

@@ -8,9 +8,11 @@ use App\Enums\VacancyExperienceEnum;
 use App\Models\Employer;
 use App\Models\User;
 use App\Models\Vacancy;
+use App\Models\VacancyApplication;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class VacancyTest extends TestCase
@@ -264,5 +266,41 @@ class VacancyTest extends TestCase
             Vacancy::where('title', 'Super vacancy')->get()->first()->employer->name
         );
 
+    }
+
+    public function test_dont_has_user_vacancy_application(): void
+    {
+        $userUuid = Str::uuid();
+        /** @var Vacancy $vacancy */
+        $vacancy = Vacancy::factory()
+            ->for(
+                Employer::factory()
+                    ->for(
+                        User::factory(['id' => $userUuid])
+                    )
+            )->create();
+
+        $this->assertFalse($vacancy->hasUserVacancyApplication($userUuid));
+    }
+
+    public function test_has_user_vacancy_application(): void
+    {
+        $userUuid = Str::uuid();
+        /** @var Vacancy $vacancy */
+        $vacancy = Vacancy::factory()
+            ->for(
+                Employer::factory()
+                    ->for(
+                        User::factory(['id' => $userUuid])
+                    )
+            )->create();
+        $vacancy->vacancyApplications()
+            ->save(
+                VacancyApplication::factory(
+                    ['user_id' => $userUuid]
+                )->make()
+            );
+
+        $this->assertTrue($vacancy->hasUserVacancyApplication($userUuid));
     }
 }
