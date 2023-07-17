@@ -28,6 +28,11 @@ class AuthControllerTest extends TestCase
             ['email' => 'abc', 'password' => 'pass'],
             ['email' => 'email']
         ];
+
+        yield 'invalid email not rfc format' => [
+            ['email' => 'abc@abc', 'password' => 'pass'],
+            ['email' => 'email']
+        ];
     }
 
     /**

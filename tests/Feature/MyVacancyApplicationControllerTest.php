@@ -36,6 +36,23 @@ class MyVacancyApplicationControllerTest extends TestCase
             ], false);
     }
 
+    public function test_my_vacancy_by_unverified_user(): void
+    {
+        $user = User::factory(['name' => 'Super Man'])->unverified()->create();
+
+        $response = $this->actingAs($user)
+            ->get('/my-vacancy-applications')
+            ->assertRedirect('/email/verify');
+
+        $this->followRedirects($response)
+            ->assertSeeInOrder([
+                $user->name,
+                'Logout',
+                'Your email not confirmed',
+                '/email/verification-notification" method="post">'
+            ], false);
+    }
+
     public function test_my_vacancy_by_user_with_pagination(): void
     {
         /** @var User $user */

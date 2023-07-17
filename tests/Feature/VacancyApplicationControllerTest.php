@@ -121,6 +121,21 @@ class VacancyApplicationControllerTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_create_form_for_unverified_user(): void
+    {
+        $uuid = $this->makeVacancyUuid();
+        $user = User::factory()->create();
+
+        VacancyApplication::factory(['user_id' => $user->id, 'vacancy_id' => $uuid])
+            ->create();
+
+        $actingAsUser = User::factory()->unverified()->create();
+
+        $this->actingAs($actingAsUser)
+            ->get('/vacancies/' . $uuid . '/application/create')
+            ->assertRedirect('/email/verify');
+    }
+
     public function test_store_for_exist_application(): void
     {
         $uuid = $this->makeVacancyUuid();

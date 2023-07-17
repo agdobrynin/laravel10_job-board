@@ -16,7 +16,7 @@
         </svg>
     </button>
     @if($header)
-        <h1 {{ $header->attributes->class(['text-2xl mb-4']) }}>
+        <h1 {{ $header->attributes->class(['text-xl mb-4']) }}>
             {{ $header }}
         </h1>
     @endif

@@ -6,7 +6,7 @@
         <title>Job bord App @isset($pageTitle)| {{ $pageTitle }} @endisset</title>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="mx-auto mt-4 max-w-2xl text-slate-700 bg-gradient-to-r from-indigo-100 from-10% via-sky-300 via-30% to-emerald-100 to-90%">
+    <body class="mx-auto mt-4 max-w-2xl text-slate-700 bg-gradient-to-r from-indigo-100 from-10% via-sky-300 via-30% to-emerald-100 to-90% pb-10">
         <nav class="mb-4 flex justify-between text-lg font-medium">
             <ul class="flex space-x-2">
                 <li>
@@ -14,7 +14,7 @@
                 </li>
             </ul>
 
-            <ul class="flex space-x-2">
+            <ul class="flex space-x-4">
                 @auth
                     <li>
                         <a class="link" href="{{ route('my-vacancy-applications.index') }}">
@@ -31,6 +31,9 @@
                 @else
                     <li>
                         <a class="link" href="{{ route('auth.create') }}">Sign in</a>
+                    </li>
+                    <li>
+                        <a class="link" href="{{ route('reg.create') }}">Sign up</a>
                     </li>
                 @endauth
             </ul>

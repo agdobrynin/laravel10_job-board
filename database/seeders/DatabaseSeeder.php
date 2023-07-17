@@ -33,7 +33,10 @@ class DatabaseSeeder extends Seeder
         $vacancies = Vacancy::all();
 
         User::factory(2)
-            ->sequence(['email' => 'user1@example.net'], ['email' => 'user2@example.net'])
+            ->sequence(
+                ['email' => 'user1@example.net', 'email_verified_at' => null],
+                ['email' => 'user2@example.net']
+            )
             ->has(
                 VacancyApplication::factory(6)
                     ->sequence(fn() => ['vacancy_id' => $vacancies->random()->id])

@@ -7,7 +7,7 @@
     'label',
     'showError'
 ])
-<label {{ $attributes->class(['flex items-center']) }}>
+<label {{ $attributes->class(['flex items-center font-semibold']) }}>
         <input type="{{ $type }}"
                @class(['border-red-500' => $showError && $errors->has($name)])
                @checked($checked)
