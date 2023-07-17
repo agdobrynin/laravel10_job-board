@@ -7,6 +7,7 @@
     'clearBtn' => true,
     'clearAndSubmit' => false,
     'id' => Str::uuid(),
+    'required' => false,
 ])
 <div
     x-init="val = '{{$value}}'; hasError = Boolean({{ $errors->has($name) }}); clearAndSubmit = Boolean({{ $clearAndSubmit }})"
@@ -57,6 +58,7 @@
                ]) }}
                name="{{ $name }}"
                value="{{ $value }}"
+               @required($required)
                placeholder="{{ $placeholder }}" />
     </div>
     @error($name)

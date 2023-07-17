@@ -17,6 +17,7 @@
         <form action="{{ route('vacancies.application.store', $vacancy) }}" method="post">
             @csrf
             <x-ui.input name="expect_salary"
+                        :required="true"
                         value="{{ old('expect_salary', '') }}"
                         label="Expected Salary"/>
 

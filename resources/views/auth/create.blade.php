@@ -7,10 +7,10 @@
         <form action="{{ route('auth.store') }}" method="post">
             @csrf
             <div class="mb-4">
-                <x-ui.input name="email" value="{{old('email')}}"  label="Email" :clearBtn="false"/>
+                <x-ui.input name="email" :required="true" value="{{old('email')}}"  label="Email" :clearBtn="false"/>
             </div>
             <div class="mb-4">
-                <x-ui.input name="password" type="password" label="Password" :clearBtn="false"/>
+                <x-ui.input name="password" :required="true" type="password" label="Password" :clearBtn="false"/>
             </div>
             <div class="flex justify-between">
                 <div>
