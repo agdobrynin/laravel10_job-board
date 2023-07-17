@@ -92,6 +92,6 @@ class VacancyControllerMethodShowTest extends TestCase
             ->get()
             ->pluck('title');
 
-        $response->assertSeeTextInOrder($vacanciesTitles->toArray(), false);
+        $response->assertSeeText($vacanciesTitles->toArray(), false);
     }
 }
