@@ -5,13 +5,15 @@
     'value',
     'checked',
     'label',
-    'showError'
+    'showError',
+    'required'
 ])
 <label {{ $attributes->class(['flex items-center font-semibold']) }}>
         <input type="{{ $type }}"
                @class(['border-red-500' => $showError && $errors->has($name)])
                @checked($checked)
                name="{{ $name }}"
+               @required($required)
                value="{{ $value }}"/>
         <span @class(['ms-2', 'text-red-500' => $showError && $errors->has($name)])>{{ $label }}</span>
 </label>

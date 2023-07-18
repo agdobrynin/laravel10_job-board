@@ -21,6 +21,13 @@
                             {{ auth()->user()->name }}
                         </a>
                     </li>
+                    @can('create', App\Models\Vacancy::class)
+                        <li>
+                            <a class="link" href="{{ route('vacancies.create') }}">
+                                Create Vacancy
+                            </a>
+                        </li>
+                    @endcan
                     <li>
                         <form action="{{ route('auth.destroy') }}" method="POST">
                             @csrf

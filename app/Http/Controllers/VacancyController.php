@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Dto\FilterVacancyDto;
 use App\Http\Requests\VacanciesIndexRequest;
+use App\Http\Requests\VacancyStoreRequest;
+use App\Models\Employer;
 use App\Models\Vacancy;
 use Illuminate\Http\Request;
 
 class VacancyController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Vacancy::class, 'vacancy');
+        $this->middleware('verified')
+            ->except(['index', 'show']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -31,15 +40,20 @@ class VacancyController extends Controller
      */
     public function create()
     {
-        //
+        return view('vacancies.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VacancyStoreRequest $request)
     {
-        //
+        /** @var Employer $employer */
+        $employer = $request->user()->employer;
+        $vacancy = Vacancy::make($request->validated());
+        $employer->vacancies()->save($vacancy);
+
+        return back()->with('success', 'Vacancy was created');
     }
 
     /**

@@ -16,7 +16,9 @@ class GroupBox extends Component
         public readonly string $legend,
         public readonly string $name,
         public readonly string $value,
-        array                  $options
+        array                  $options,
+        public readonly bool   $withAll = true,
+        public readonly bool   $required = false,
     )
     {
         $this->options = array_map(function ($option) {

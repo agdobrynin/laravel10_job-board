@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn() => to_route('vacancies.index'));
 
 Route::resource('vacancies', VacancyController::class)
-    ->only(['index', 'show']);
+    ->only(['index', 'show', 'create', 'store']);
 
 // redirect to custom auth controller
 Route::get('login', fn() => to_route('auth.create'))
