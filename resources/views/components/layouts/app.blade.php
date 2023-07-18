@@ -18,7 +18,7 @@
                 @auth
                     <li>
                         <a class="link" href="{{ route('my-vacancy-applications.index') }}">
-                            {{ auth()->user()->name ?? 'Guest' }}
+                            {{ auth()->user()->name }}
                         </a>
                     </li>
                     <li>
