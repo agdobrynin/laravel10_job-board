@@ -49,10 +49,9 @@ class VacancyController extends Controller
     {
         $perPage = config('app.paginator.vacancies.employer.vacancies');
 
-        $otherVacancies = $vacancy->employer()
-            ->firstOrFail()
-            ->vacancies()
-            ->where('id', '!=', $vacancy->id)
+        $vacancy->loadMissing('employer');
+
+        $otherVacancies = $vacancy->relatedVacancies()
             ->latest()
             ->paginate($perPage);
 

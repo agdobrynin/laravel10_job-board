@@ -71,6 +71,12 @@ class Vacancy extends Model
             );
     }
 
+    public function scopeRelatedVacancies(): Builder
+    {
+        return $this->where('employer_id', $this->employer->id)
+            ->where('id', '!=', $this->id);
+    }
+
     public function hasUserVacancyApplication(User|string $user): bool
     {
         return $this->where('id', $this->id)

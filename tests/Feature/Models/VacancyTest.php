@@ -222,7 +222,7 @@ class VacancyTest extends TestCase
                         if ($sequence->index === 0) {
                             return [
                                 'category' => VacancyCategoryEnum::IT->value,
-                                'description' => fake()->text.' with google inc too',
+                                'description' => fake()->text . ' with google inc too',
                             ];
                         }
 
@@ -302,5 +302,29 @@ class VacancyTest extends TestCase
             );
 
         $this->assertTrue($vacancy->hasUserVacancyApplication($userUuid));
+    }
+
+    public function test_related_vacancies(): void
+    {
+        $vacancyUuid = Str::uuid();
+
+        // RelatedVacancies
+        User::factory()
+            ->has(
+                Employer::factory(['name' => 'Kaspi-Soft LLC'])
+                    ->has(
+                        Vacancy::factory(3)
+                            ->sequence(
+                                ['title' => 'Super Vacancy One', 'id' => $vacancyUuid],
+                                ['title' => 'Other Vacancy'],
+                                ['title' => 'Bird finder']
+                            )
+                    )
+            )->create();
+
+        $relatedVacancies = Vacancy::find($vacancyUuid)->relatedVacancies()->get();
+
+        $this->assertCount(2, $relatedVacancies);
+        $this->assertEquals(['Other Vacancy', 'Bird finder'], $relatedVacancies->pluck('title')->toArray());
     }
 }
