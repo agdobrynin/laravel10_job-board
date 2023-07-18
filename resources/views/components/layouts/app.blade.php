@@ -16,18 +16,38 @@
 
             <ul class="flex space-x-4">
                 @auth
-                    <li>
-                        <a class="link" href="{{ route('my-vacancy-applications.index') }}">
+                    <li class="relative"
+                        x-data="{open: false}"
+                        x-on:click.outside="open = false">
+                        <a class="link"
+                           :class="{ 'link': !open }"
+                           href="#"
+                           x-on:click.prevent="open = ! open">
                             {{ auth()->user()->name }}
                         </a>
+                        <ul
+                            x-transition
+                            class="hidden absolute right-0 font-normal bg-slate-50 p-4 border border-slate-400 shadow-md rounded-md grid gap-2"
+                            :class="{ 'hidden': ! open }">
+                            <li class="whitespace-nowrap">
+                                <a class="link" href="{{ route('my-vacancy-applications.index') }}">
+                                    My applications
+                                </a>
+                            </li>
+                            @can('create', App\Models\Vacancy::class)
+                                <li class="whitespace-nowrap">
+                                    <a class="link" href="{{ route('vacancies.create') }}">
+                                        Create Vacancy
+                                    </a>
+                                </li>
+                                <li class="whitespace-nowrap">
+                                    <a class="link" href="#">
+                                        vacancies applications
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
                     </li>
-                    @can('create', App\Models\Vacancy::class)
-                        <li>
-                            <a class="link" href="{{ route('vacancies.create') }}">
-                                Create Vacancy
-                            </a>
-                        </li>
-                    @endcan
                     <li>
                         <form action="{{ route('auth.destroy') }}" method="POST">
                             @csrf
