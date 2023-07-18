@@ -30,20 +30,14 @@
                             class="hidden absolute z-10 right-0 font-normal bg-slate-50 p-4 border border-slate-400 shadow-md rounded-md grid gap-2"
                             :class="{ 'hidden': ! open }">
                             <li class="whitespace-nowrap">
-                                <a class="link" href="{{ route('my-vacancy-applications.index') }}">
-                                    My applications
-                                </a>
+                                📝 <a class="link" href="{{ route('my-vacancy-applications.index') }}">My applications</a>
                             </li>
                             @can('create', App\Models\Vacancy::class)
                                 <li class="whitespace-nowrap">
-                                    <a class="link" href="{{ route('vacancies.create') }}">
-                                        Create Vacancy
-                                    </a>
+                                    📁 <a class="link" href="{{ route('vacancies.create') }}">Create Vacancy</a>
                                 </li>
                                 <li class="whitespace-nowrap">
-                                    <a class="link" href="#">
-                                        vacancies applications
-                                    </a>
+                                    💼 <a class="link" href="#">Vacancies applications</a>
                                 </li>
                             @endcan
                         </ul>
