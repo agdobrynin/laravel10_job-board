@@ -29,7 +29,7 @@ class VacancyPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return (bool)$user->employer;
     }
 
     /**
@@ -37,7 +37,7 @@ class VacancyPolicy
      */
     public function update(User $user, Vacancy $vacancy): bool
     {
-        return false;
+        return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 
     /**
@@ -45,7 +45,7 @@ class VacancyPolicy
      */
     public function delete(User $user, Vacancy $vacancy): bool
     {
-        return false;
+        return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 
     /**
@@ -61,7 +61,7 @@ class VacancyPolicy
      */
     public function forceDelete(User $user, Vacancy $vacancy): bool
     {
-        return false;
+        return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 
     /**

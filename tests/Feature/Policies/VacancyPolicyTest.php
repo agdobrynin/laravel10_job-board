@@ -52,11 +52,18 @@ class VacancyPolicyTest extends TestCase
         $this->assertTrue((new VacancyPolicy())->view($user, $vacancy));
     }
 
-    public function test_create(): void
+    public function test_create_without_employer(): void
     {
         $user = User::factory()->create();
 
         $this->assertFalse((new VacancyPolicy())->create($user));
+    }
+
+    public function test_create_as_employer(): void
+    {
+        $user = User::factory()->has(Employer::factory())->create();
+
+        $this->assertTrue((new VacancyPolicy())->create($user));
     }
 
     public function test_update(): void
@@ -71,6 +78,15 @@ class VacancyPolicyTest extends TestCase
         $this->assertTrue((new VacancyPolicy())->update(null, $vacancy));
     }
 
+    public function test_update_as_employer(): void
+    {
+        $user = User::factory()->create();
+
+        $vacancy = $this->makeVacancy($user);
+
+        $this->assertTrue((new VacancyPolicy())->update($user, $vacancy));
+    }
+
     public function test_delete(): void
     {
         $user = User::factory()->create();
@@ -81,6 +97,15 @@ class VacancyPolicyTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->assertTrue((new VacancyPolicy())->delete(null, $vacancy));
+    }
+
+    public function test_delete_as_employer(): void
+    {
+        $user = User::factory()->create();
+
+        $vacancy = $this->makeVacancy($user);
+
+        $this->assertTrue((new VacancyPolicy())->delete($user, $vacancy));
     }
 
     public function test_restore(): void
@@ -105,6 +130,15 @@ class VacancyPolicyTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->assertTrue((new VacancyPolicy())->forceDelete(null, $vacancy));
+    }
+
+    public function test_forceDelete_as_employer(): void
+    {
+        $user = User::factory()->create();
+
+        $vacancy = $this->makeVacancy($user);
+
+        $this->assertTrue((new VacancyPolicy())->forceDelete($user, $vacancy));
     }
 
     public function test_apply_anonymous(): void
