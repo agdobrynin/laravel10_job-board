@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class VacancyControllerMethodCreateTest extends TestCase
+class MyVacancyControllerMethodCreateTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -15,9 +15,9 @@ class VacancyControllerMethodCreateTest extends TestCase
     {
         yield 'anonymous' => [
             fn() => null,
-            403,
+            302,
             [],
-            null,
+            '/login',
         ];
 
         yield 'user but not employer' => [
@@ -66,7 +66,7 @@ class VacancyControllerMethodCreateTest extends TestCase
             $this->actingAs($actingUser);
         }
 
-        $response = $this->get('/vacancies/create')
+        $response = $this->get('/my-vacancy/create')
             ->assertStatus($statusCode)
             ->assertSee($see, false);
 

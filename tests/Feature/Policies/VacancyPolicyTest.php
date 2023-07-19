@@ -17,19 +17,28 @@ class VacancyPolicyTest extends TestCase
 
     public function test_view_any_anonymous(): void
     {
-        $this->assertTrue((new VacancyPolicy())->viewAny(null));
+        $this->expectException(\TypeError::class);
+        (new VacancyPolicy())->viewAny(null);
     }
 
     public function test_view_any_user(): void
     {
-        $this->assertTrue((new VacancyPolicy())->viewAny(User::factory()->create()));
+        $this->assertFalse(
+            (new VacancyPolicy())->viewAny(User::factory()->create())
+        );
+    }
+
+    public function test_view_any_employer(): void
+    {
+        $this->assertTrue((new VacancyPolicy())->viewAny(User::factory()->has(Employer::factory())->create()));
     }
 
     public function test_view_anonymous(): void
     {
         $vacancy = $this->makeVacancy(User::factory()->create());
 
-        $this->assertTrue((new VacancyPolicy())->view(null, $vacancy));
+        $this->expectException(\TypeError::class);
+        (new VacancyPolicy())->view(null, $vacancy);
     }
 
     private function makeVacancy(User $user): Vacancy
@@ -49,7 +58,7 @@ class VacancyPolicyTest extends TestCase
 
         $vacancy = $this->makeVacancy(User::factory()->create());
 
-        $this->assertTrue((new VacancyPolicy())->view($user, $vacancy));
+        $this->assertFalse((new VacancyPolicy())->view($user, $vacancy));
     }
 
     public function test_create_without_employer(): void

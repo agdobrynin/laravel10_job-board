@@ -4,7 +4,7 @@
         :links="['Vacancies' => route('vacancies.index'), 'Create vacancy' => null]"/>
 
     <x-ui.card>
-        <form action="{{ route('vacancies.store') }}" method="post">
+        <form action="{{ route('my-vacancy.store') }}" method="post">
             @csrf
             <div class="mb-4">
                 <x-ui.input name="title"

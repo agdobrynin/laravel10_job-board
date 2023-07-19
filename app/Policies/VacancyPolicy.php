@@ -11,17 +11,17 @@ class VacancyPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(?User $user): bool
+    public function viewAny(User $user): bool
     {
-        return true;
+        return (bool)$user->employer;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(?User $user, Vacancy $vacancy): bool
+    public function view(User $user, Vacancy $vacancy): bool
     {
-        return true;
+        return $user->employer && $vacancy->employer->id === $user->employer->id;
     }
 
     /**

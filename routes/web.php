@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MyVacancyApplicationController;
+use App\Http\Controllers\MyVacancyController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\VacancyApplicationController;
 use App\Http\Controllers\VacancyController;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn() => to_route('vacancies.index'));
 
 Route::resource('vacancies', VacancyController::class)
-    ->only(['index', 'show', 'create', 'store']);
+    ->only(['index', 'show']);
 
 // redirect to custom auth controller
 Route::get('login', fn() => to_route('auth.create'))
@@ -48,6 +49,8 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('my-vacancy-applications', MyVacancyApplicationController::class)
             ->only(['index', 'destroy']);
+
+        Route::resource('my-vacancy', MyVacancyController::class);
     });
 });
 

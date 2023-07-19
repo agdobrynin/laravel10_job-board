@@ -8,7 +8,7 @@ use App\Models\Vacancy;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class VacancyControllerMethodStoreTest extends TestCase
+class MyVacancyControllerMethodStoreTest extends TestCase
 {
 
     use RefreshDatabase;
@@ -115,8 +115,8 @@ class VacancyControllerMethodStoreTest extends TestCase
         $user = $actingAs();
 
         $response = $this->actingAs($user)
-            ->from('/vacancies/create')
-            ->post('/vacancies', $data)
+            ->from('/my-vacancy/create')
+            ->post('/my-vacancy', $data)
             ->assertStatus($statusCode);
 
         if ($invalid) {
