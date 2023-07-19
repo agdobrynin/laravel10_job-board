@@ -42,7 +42,8 @@ class MyVacancyController extends Controller
         $vacancy = Vacancy::make($request->validated());
         $employer->vacancies()->save($vacancy);
 
-        return back()->with('success', 'Vacancy was created');
+        return to_route('my-vacancy.index')
+            ->with('success', 'Vacancy was created');
     }
 
 
