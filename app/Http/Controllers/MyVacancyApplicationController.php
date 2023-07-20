@@ -15,7 +15,7 @@ class MyVacancyApplicationController extends Controller
             ->with(['vacancy' => function ($vacancy) {
                 $vacancy->withCount('vacancyApplications')
                     ->withAvg('vacancyApplications', 'expect_salary');
-            }], 'vacancy.employer')
+            }, 'vacancy.employer.user'])
             ->latest()
             ->paginate($perPage);
 
