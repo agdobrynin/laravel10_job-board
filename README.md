@@ -70,6 +70,18 @@ docker run --rm -u "$(id -u):$(id -g)" \
     ./vendor/bin/sail artisan migrate --seed
     ```
 
+3. Настроить storage link для загруженных файлов
+    ```shell
+    ./vendor/bin/sail artisan storage:link
+    ```
+4. Собрать фронт
+    ```shell
+    ./vendor/bin/sail npm install
+    ```
+    ```shell
+    ./vendor/bin/sail npm run build
+    ```
+
 ### Запуск тестов
 
 ```shell
@@ -81,3 +93,5 @@ docker run --rm -u "$(id -u):$(id -g)" \
 |                Host                | Назначение                                                   |
 |:----------------------------------:|:-------------------------------------------------------------|
 |          http://localhost          | сайт приложения                                              |
+|       http://localhost:8025        | Mailpit - вэб интерфейс для отладки отправки email сообщения |
+
