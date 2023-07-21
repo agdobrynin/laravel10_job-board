@@ -6,8 +6,10 @@ use App\Models\Employer;
 use App\Models\User;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
+use App\Notifications\OfferFromEmployee;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -155,6 +157,8 @@ class VacancyApplicationControllerTest extends TestCase
      */
     public function test_create_form_for_user_validation(array $data, array $invalid, array $valid): void
     {
+        Notification::fake();
+
         $uuid = $this->makeVacancyUuid();
         $user = User::factory()->create();
 
@@ -177,6 +181,11 @@ class VacancyApplicationControllerTest extends TestCase
             $response->assertValid($valid)
                 ->assertRedirect('/vacancies/' . $uuid);
             $this->assertDatabaseHas(VacancyApplication::class, [...$databaseSet, ...$data]);
+
+            Notification::assertSentTo(
+                [Vacancy::find($uuid)->employer->user],
+                OfferFromEmployee::class
+            );
         }
     }
 }

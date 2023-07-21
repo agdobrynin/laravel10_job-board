@@ -81,7 +81,10 @@ docker run --rm -u "$(id -u):$(id -g)" \
     ```shell
     ./vendor/bin/sail npm run build
     ```
-
+5. Запустить воркер (worker) обрабатывающий задачи из очереди сообщений
+    ```shell
+   ./vendor/bin/sail artisan queue:work
+   ```
 ### Запуск тестов
 
 ```shell
