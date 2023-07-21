@@ -5,7 +5,7 @@
     /*Named slot footer*/
     'footer' => null,
 ])
-<x-ui.card {{ $attributes->class('') }}>
+<x-ui.card {{ $attributes->class(['']) }}>
     <div class="flex justify-between">
         <h2 class="text-lg font-medium">{{ $vacancy->title }}</h2>
         <div class="text-slate-500">Salary: ${{ number_format($vacancy->salary) }}</div>

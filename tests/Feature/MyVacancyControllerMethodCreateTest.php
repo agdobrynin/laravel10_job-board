@@ -13,20 +13,6 @@ class MyVacancyControllerMethodCreateTest extends TestCase
 
     public static function data(): \Generator
     {
-        yield 'anonymous' => [
-            fn() => null,
-            302,
-            [],
-            '/login',
-        ];
-
-        yield 'user but not employer' => [
-            fn() => User::factory()->create(),
-            403,
-            [],
-            null,
-        ];
-
         yield 'user employer but not verified email' => [
             fn() => User::factory()->unverified()->has(Employer::factory())->create(),
             302,

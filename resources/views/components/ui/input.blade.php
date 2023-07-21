@@ -57,7 +57,7 @@
                    'pr-6' => $clearBtn,
                ]) }}
                name="{{ $name }}"
-               value="{{ $value }}"
+               value=""
                @required($required)
                placeholder="{{ $placeholder }}" />
     </div>

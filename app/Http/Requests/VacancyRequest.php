@@ -8,7 +8,7 @@ use App\Models\Vacancy;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class VacancyStoreRequest extends FormRequest
+class VacancyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

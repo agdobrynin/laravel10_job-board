@@ -37,7 +37,7 @@
                                     📁 <a class="link" href="{{ route('my-vacancy.create') }}">Create Vacancy</a>
                                 </li>
                                 <li class="whitespace-nowrap">
-                                    💼 <a class="link" href="{{ route('my-vacancy.index') }}">My vacancies</a>
+                                    💼 <a class="link" href="{{ route('my-vacancy.index') }}">{{ auth()->user()->employer->name }} vacancies</a>
                                 </li>
                             @endcan
                         </ul>

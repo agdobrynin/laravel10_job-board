@@ -20,7 +20,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)
                 ->constrained();
             $table->foreignIdFor(Vacancy::class)
-                ->constrained();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

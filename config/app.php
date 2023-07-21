@@ -190,6 +190,7 @@ return [
             'list' => env('PAGINATOR_VACANCIES_LIST', 10),
             'employer' => [
                 'vacancies' => env('PAGINATOR_VACANCIES_EMPLOYER_VACANCIES', 5),
+                'applications' => env('PAGINATOR_VACANCIES_EMPLOYER_APPLICATIONS', 5),
             ],
         ],
         'my_vacancy_applications' => [

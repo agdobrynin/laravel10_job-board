@@ -96,6 +96,23 @@ class VacancyPolicyTest extends TestCase
         $this->assertTrue((new VacancyPolicy())->update($user, $vacancy));
     }
 
+    public function test_update_as_employer_with_application(): void
+    {
+        $user = User::factory()->create();
+
+        $vacancy = $this->makeVacancy($user);
+
+        VacancyApplication::factory()
+            ->for(User::factory()->create())
+            ->for($vacancy)
+            ->create();
+
+        $res = (new VacancyPolicy())->update($user, $vacancy);
+
+        $this->assertInstanceOf(Response::class, $res);
+        $this->assertTrue($res->denied());
+    }
+
     public function test_delete(): void
     {
         $user = User::factory()->create();

@@ -11,6 +11,9 @@
 
     @forelse($vacancyApplications as $application)
         <x-vacancy.card :vacancy="$application->vacancy" class="mb-4">
+            <x-slot:description>
+                Employer contact: <span class="font-semibold">{{ $application->vacancy->employer->user->email }}</span>
+            </x-slot:description>
             <x-slot:footer>
                 <div class="flex justify-between items-center">
                     <div class="text-slate-500 text-xs grid gap-6 xs:grid-cols-1 sm:grid-cols-2">

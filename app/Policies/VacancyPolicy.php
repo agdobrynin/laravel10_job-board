@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Str;
 
 class VacancyPolicy
 {
@@ -21,7 +22,7 @@ class VacancyPolicy
      */
     public function view(User $user, Vacancy $vacancy): bool
     {
-        return $user->employer && $vacancy->employer->id === $user->employer->id;
+        return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 
     /**
@@ -35,8 +36,12 @@ class VacancyPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Vacancy $vacancy): bool
+    public function update(User $user, Vacancy $vacancy): Response|bool
     {
+        if ($count = $vacancy->vacancyApplications()->count()) {
+            return Response::deny('Vacancy has ' . $count . ' ' . Str::plural('application', $count));
+        }
+
         return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 

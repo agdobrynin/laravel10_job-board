@@ -1,6 +1,6 @@
 @props([
     'name',
-    'value' => '',
+    'text' => '',
     'placeholder' => '',
     'label' => '',
     'clearBtn' => true,
@@ -9,14 +9,11 @@
     'required' => false,
 ])
 <div
-    x-init="val = '{{$value}}'; hasError = Boolean({{ $errors->has($name) }}); clearAndSubmit = Boolean({{ $clearAndSubmit }})"
+    x-init="val = '{{ str_replace(["\r","\n"], ["", "\\n"], $text)}}'; hasError = Boolean({{ $errors->has($name) }}); clearAndSubmit = Boolean({{ $clearAndSubmit }})"
     x-data="{
         clearAndSubmit: false,
-
         val: '',
-
         hasError: false,
-
         clear(withSubmit) {
             this.val = '';
             this.hasError = false;
@@ -26,8 +23,7 @@
                 this.$refs.input.form?.submit();
             }
         }
-    }"
->
+    }">
     @if($label)
         <label class="font-semibold mb-2 ms-1 block cursor-pointer" for="{{$id}}">{{ $label }}</label>
     @endif
@@ -36,7 +32,7 @@
             <button
                 x-show="val.length"
                 type="button"
-                class="absolute top-4 right-0 flex h-full pr-2"
+                class="absolute top-1 right-4 flex"
                 x-on:click="clear(clearAndSubmit)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="h-4 w-4 text-slate-500">
@@ -56,10 +52,9 @@
                 'pr-6' => $clearBtn,
             ]) }}
             name="{{ $name }}"
-            value="{{ $value }}"
             @required($required)
             placeholder="{{ $placeholder }}"
-        >{{ $value }}</textarea>
+        ></textarea>
     </div>
     @error($name)
         <div x-show="hasError" class="mt-1 text-xs text-red-500">
