@@ -152,4 +152,44 @@ class RegisterControllerTest extends TestCase
             [$user], VerifyEmail::class
         );
     }
+
+    public function test_success_register_as_employer(): void
+    {
+        // send email (notification) to user with link confirmation
+        Notification::fake();
+
+        $data = [
+            'email' => 'ivan@kaspi.com',
+            'name' => 'ivan ivanov',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'is_employer' => '1',
+            'employer_name' => 'Kaspi-Soft LLC'
+        ];
+
+        $this->from('/reg/create')
+            ->post('/reg', $data)
+            ->assertRedirect('/vacancies')
+            ->assertSessionHas('success');
+
+        $user = User::where('email', 'ivan@kaspi.com')->first();
+
+        $this->assertDatabaseHas(User::class, [
+            'email' => 'ivan@kaspi.com',
+            'name' => 'ivan ivanov',
+            'email_verified_at' => null,
+        ]);
+
+        $this->assertDatabaseHas(Employer::class, [
+            'name' => 'Kaspi-Soft LLC',
+            'user_id' => $user->id,
+        ]);
+
+        $this->assertEquals('ivan@kaspi.com', Auth::user()->email);
+        Notification::assertCount(1);
+
+        Notification::assertSentTo(
+            [$user], VerifyEmail::class
+        );
+    }
 }

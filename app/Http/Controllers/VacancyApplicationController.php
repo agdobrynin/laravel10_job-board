@@ -2,28 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\VacancyApplicationStoreDto;
 use App\Http\Requests\VacancyApplicationStoreRequest;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use App\Notifications\OfferFromEmployee;
+use App\Services\VacancyApplicationCvStorage;
 
 class VacancyApplicationController extends Controller
 {
-    public function create(Vacancy $vacancy)
+    public function store(
+        VacancyApplicationStoreRequest $request,
+        Vacancy                        $vacancy,
+        VacancyApplicationCvStorage    $cvStorage,
+    )
     {
         $this->authorize('apply', $vacancy);
 
-        return view('vacancies_application.create', ['vacancy' => $vacancy]);
-    }
+        $dto = new VacancyApplicationStoreDto(...$request->validated());
 
-    public function store(VacancyApplicationStoreRequest $request, Vacancy $vacancy)
-    {
-        $this->authorize('apply', $vacancy);
+        $cvPath = $cvStorage->adapter->putFile($dto->cv);
+
         /** @var VacancyApplication $application */
-        $application = $vacancy->vacancyApplications()->make($request->validated());
-        $application->user()
-            ->associate($request->user())
-            ->save();
+        $application = $vacancy->vacancyApplications()
+            ->create([
+                'expect_salary' => $dto->expect_salary,
+                'cv_path' => $cvPath,
+                'user_id' => $request->user()->id,
+            ]);
 
         $vacancy->employer
             ->user
@@ -31,5 +37,12 @@ class VacancyApplicationController extends Controller
 
         return redirect()->route('vacancies.show', $vacancy)
             ->with('success', 'You apply to this vacancy.');
+    }
+
+    public function create(Vacancy $vacancy)
+    {
+        $this->authorize('apply', $vacancy);
+
+        return view('vacancies_application.create', ['vacancy' => $vacancy]);
     }
 }

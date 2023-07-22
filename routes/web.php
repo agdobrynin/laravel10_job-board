@@ -51,6 +51,10 @@ Route::middleware('auth')->group(function () {
             ->only(['index', 'destroy']);
 
         Route::resource('my-vacancy', MyVacancyController::class);
+        // Download CV from application
+        Route::get('my-vacancy/{my_vacancy}/download/{vacancy_application}', [MyVacancyController::class, 'download'])
+            ->scopeBindings()
+            ->name('my-vacancy.download');
     });
 });
 

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\VacancyApplicationCvStorage;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            VacancyApplicationCvStorage::class,
+            fn() => new VacancyApplicationCvStorage(Storage::disk('cv'))
+        );
     }
 
     /**

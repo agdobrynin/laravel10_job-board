@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VacancyRequest;
 use App\Models\Employer;
 use App\Models\Vacancy;
+use App\Models\VacancyApplication;
+use App\Services\VacancyApplicationCvStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MyVacancyController extends Controller
 {
@@ -102,5 +106,27 @@ class MyVacancyController extends Controller
         $myVacancy->delete();
 
         return to_route('my-vacancy.index')->with('success', 'Vacancy was deleted');
+    }
+
+    public function download(
+        Vacancy                     $myVacancy,
+        VacancyApplication          $vacancyApplication,
+        VacancyApplicationCvStorage $cvStorage,
+    ): StreamedResponse
+    {
+        $this->authorize('view', $myVacancy);
+
+        $path = $vacancyApplication->cv_path;
+
+        if ($path === null || !$cvStorage->adapter->has($path)) {
+            throw new NotFoundHttpException('CV file not found for application ' . $vacancyApplication->id);
+        }
+
+        $ext = pathinfo($path)['extension'] ?? 'unknown';
+
+        return $cvStorage->adapter->download(
+            $path,
+            'CV letter for ' . $myVacancy->title . ' from ' . $vacancyApplication->user->name . '.' . $ext
+        );
     }
 }

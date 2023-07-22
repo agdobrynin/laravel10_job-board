@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 use Tests\TestHelper;
@@ -34,6 +36,12 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
         $this->assertDatabaseHas(Vacancy::class, ['id' => $uuid]);
         $this->assertDatabaseHas(VacancyApplication::class, ['id' => $uuidApplication]);
 
+        Storage::fake('cv');
+        $file = UploadedFile::fake()->create('abc.pdf', 1);
+        $path = Storage::disk('cv')->putFile($file);
+        VacancyApplication::find($uuidApplication)->update(['cv_path' => $path]);
+        Storage::disk('cv')->assertExists($path);
+
         $this->actingAs($user)
             ->delete('/my-vacancy/' . $uuid)
             ->assertRedirect('/my-vacancy')
@@ -41,6 +49,8 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
 
         $this->assertDatabaseMissing(Vacancy::class, ['id' => $uuid]);
         $this->assertDatabaseMissing(VacancyApplication::class, ['id' => $uuidApplication]);
+
+        Storage::disk('cv')->assertMissing($path);
     }
 
     public function test_destroy_by_not_owner_employer(): void

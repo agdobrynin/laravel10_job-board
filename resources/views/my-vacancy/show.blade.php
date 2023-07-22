@@ -33,9 +33,13 @@
                     <div>
                         ⏰ Applied {{ $application->created_at->diffForHumans() }}
                     </div>
-                    <div>
-                        📃 Download CV
-                    </div>
+                    @if($application->cv_path)
+                        <div>
+                            📃 <a class="link"
+                                 href="{{ route('my-vacancy.download', [$vacancy, $application]) }}"
+                                 target="_blank">Download CV</a>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="text-2xl">${{ number_format($application->expect_salary) }}</div>

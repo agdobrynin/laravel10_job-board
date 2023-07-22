@@ -7,8 +7,12 @@ use App\Models\User;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
+use Tests\TestHelper;
 
 class MyVacancyApplicationControllerTest extends TestCase
 {
@@ -113,5 +117,52 @@ class MyVacancyApplicationControllerTest extends TestCase
                 '<a href="' . $url . '/my-vacancy-applications?page=2"',
                 '<a href="' . $url . '/my-vacancy-applications?page=3"',
             ], false);
+    }
+
+    public function test_destroy_fail(): void
+    {
+        $vacancyUuid = Str::uuid()->toString();
+        $applicationUuid = Str::uuid()->toString();
+
+        TestHelper::makeVacancyWithApplication($vacancyUuid, $applicationUuid);
+
+        $this->actingAs(User::factory()->create())
+            ->delete('my-vacancy-applications/' . $applicationUuid)
+            ->assertForbidden();
+    }
+
+    public function test_destroy_with_cv(): void
+    {
+        $vacancyUuid = Str::uuid()->toString();
+        $applicationUuid = Str::uuid()->toString();
+
+        Storage::fake('cv');
+
+        $file = UploadedFile::fake()->create('abc.pdf', 1);
+
+        TestHelper::makeVacancyWithApplication($vacancyUuid, $applicationUuid);
+        /** @var VacancyApplication $application */
+        $application = VacancyApplication::find($applicationUuid);
+        $cvPath = Storage::disk('cv')->putFile($file);
+        $application->cv_path = $cvPath;
+        $application->save();
+
+        $this->assertDatabaseHas(
+            VacancyApplication::class, [
+            'id' => $applicationUuid,
+            'cv_path' => $cvPath,
+        ]);
+
+        Storage::disk('cv')->assertExists($cvPath);
+
+        $this->actingAs($application->user)
+            ->from('/my-vacancy-applications')
+            ->delete('my-vacancy-applications/' . $applicationUuid)
+            ->assertRedirect('/my-vacancy-applications')
+            ->assertSessionHas('success');
+
+        Storage::disk('cv')->assertMissing($cvPath);
+
+        $this->assertDatabaseMissing(VacancyApplication::class, ['id' => $applicationUuid]);
     }
 }

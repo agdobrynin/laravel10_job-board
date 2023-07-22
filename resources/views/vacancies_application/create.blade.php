@@ -14,12 +14,21 @@
             Your Job Application
         </h2>
 
-        <form action="{{ route('vacancies.application.store', $vacancy) }}" method="post">
+        <form action="{{ route('vacancies.application.store', $vacancy) }}" method="post"
+            enctype="multipart/form-data">
             @csrf
-            <x-ui.input name="expect_salary"
-                        :required="true"
-                        value="{{ old('expect_salary', '') }}"
-                        label="Expected Salary"/>
+            <div class="mb-4">
+                <x-ui.input name="expect_salary"
+                            :required="true"
+                            value="{{ old('expect_salary', '') }}"
+                            label="Expected Salary"/>
+            </div>
+            <div class="mb-4">
+                <x-ui.input name="cv"
+                            type="file"
+                            :required="true"
+                            label="Your CV latter (format: pdf, docx, doc, odt, txt)"/>
+            </div>
 
             <x-ui.button type="submit" class="w-full mt-4">Apply</x-ui.button>
         </form>

@@ -27,7 +27,13 @@ class VacancyApplicationStoreRequest extends FormRequest
                 'integer',
                 'gt:1',
                 'max:' . 1_000_000,
-            ]
+            ],
+            'cv' => [
+                'required',
+                'file',
+                'max:2048',
+                'mimes:pdf,docx,doc,odt,txt',
+            ],
         ];
     }
 }

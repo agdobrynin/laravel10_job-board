@@ -11,7 +11,7 @@ class VacancyApplication extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['expect_salary'];
+    protected $fillable = ['expect_salary', 'cv_path', 'user_id'];
 
     public function user(): BelongsTo
     {
