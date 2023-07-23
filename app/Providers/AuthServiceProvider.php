@@ -4,6 +4,8 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Vacancy;
+use App\Models\VacancyApplication;
+use App\Policies\VacancyApplicationPolicy;
 use App\Policies\VacancyPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Vacancy::class => VacancyPolicy::class,
+        VacancyApplication::class => VacancyApplicationPolicy::class,
     ];
 
     /**

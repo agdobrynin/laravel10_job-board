@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\VacancyApplication;
+use App\Services\VacancyApplicationCvStorage;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MyVacancyApplicationController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $perPage = config('app.paginator.my_vacancy_applications.list');
 
@@ -22,16 +26,19 @@ class MyVacancyApplicationController extends Controller
         return view('my-vacancy-application.index', compact('vacancyApplications'));
     }
 
-    public function destroy(VacancyApplication $myVacancyApplication)
+    public function destroy(VacancyApplication $myVacancyApplication): RedirectResponse
     {
-        abort_if(
-            $myVacancyApplication->user_id !== auth()->user()?->id,
-            403,
-            'You are not owner this vacancy application'
-        );
+        $this->authorize('delete', $myVacancyApplication);
 
         $myVacancyApplication->delete();
 
         return back()->with('success', 'Your application remove');
+    }
+
+    public function download(VacancyApplication $myVacancyApplication, VacancyApplicationCvStorage $cvStorage): StreamedResponse
+    {
+        $this->authorize('view', $myVacancyApplication);
+
+        return $cvStorage->adapter->download($myVacancyApplication->cv_path);
     }
 }

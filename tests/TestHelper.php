@@ -8,6 +8,8 @@ use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use Database\Factories\VacancyFactory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class TestHelper
 {
@@ -30,5 +32,30 @@ class TestHelper
                     )
             )
             ->create();
+    }
+
+    public static function makeApplication(User $forUser): VacancyApplication
+    {
+        return VacancyApplication::factory()
+            ->for($forUser)
+            ->for(
+                Vacancy::factory()
+                    ->for(
+                        Employer::factory()
+                            ->for(User::factory()->create())
+                    )
+            )
+            ->create();
+    }
+
+    public static function attachCvToApplication(VacancyApplication $application): string
+    {
+        $file = UploadedFile::fake()->create('abc.pdf', 1);
+        /** @var VacancyApplication $application */
+        $cvPath = Storage::disk('cv')->putFile($file);
+        $application->cv_path = $cvPath;
+        $application->save();
+
+        return $cvPath;
     }
 }

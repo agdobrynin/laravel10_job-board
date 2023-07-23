@@ -16,7 +16,7 @@
             </x-slot:description>
             <x-slot:footer>
                 <div class="flex justify-between items-center">
-                    <div class="text-slate-500 text-xs grid gap-6 xs:grid-cols-1 sm:grid-cols-2">
+                    <div class="text-slate-500 grid gap-6 xs:grid-cols-1 sm:grid-cols-2">
                         <div>
                             Your applied
                             <span class="font-semibold">{{ $application->created_at->diffForHumans() }}</span>
@@ -45,6 +45,12 @@
                         <x-ui.link-button class="block mt-4" href="{{ route('vacancies.show', $application->vacancy) }}">
                             🔍 View vacancy details
                         </x-ui.link-button>
+                        @if($application->cv_path)
+                            <x-ui.link-button target="_blank" class="block mt-4"
+                                              href="{{ route('my-vacancy-applications.download', $application) }}">
+                                📃 View my cover letter
+                            </x-ui.link-button>
+                        @endif
                     </div>
                 </div>
             </x-slot:footer>

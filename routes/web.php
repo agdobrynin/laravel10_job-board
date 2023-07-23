@@ -50,6 +50,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('my-vacancy-applications', MyVacancyApplicationController::class)
             ->only(['index', 'destroy']);
 
+        Route::get(
+            '/my-vacancy-applications/{my_vacancy_application}/download',
+            [MyVacancyApplicationController::class, 'download']
+        )->name('my-vacancy-applications.download');
+
         Route::resource('my-vacancy', MyVacancyController::class);
         // Download CV from application
         Route::get('my-vacancy/{my_vacancy}/download/{vacancy_application}', [MyVacancyController::class, 'download'])

@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -18,6 +17,40 @@ class MyVacancyApplicationControllerTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    public static function dataDownload(): \Generator
+    {
+        $applicationUuid = Str::uuid()->toString();
+
+        yield 'by anonymous' => [
+            fn() => null,
+            $applicationUuid,
+            302,
+            '/login'
+        ];
+
+        yield 'by not owner' => [
+            function () use ($applicationUuid) {
+                TestHelper::makeVacancyWithApplication(Str::uuid(), $applicationUuid);
+
+                return User::factory()->create();
+            },
+            $applicationUuid,
+            403,
+        ];
+
+        yield 'success' => [
+            function () use ($applicationUuid) {
+                TestHelper::makeVacancyWithApplication(Str::uuid(), $applicationUuid);
+                $application = VacancyApplication::find($applicationUuid);
+                TestHelper::attachCvToApplication($application);
+
+                return $application->user;
+            },
+            $applicationUuid,
+            200,
+        ];
+    }
 
     public function test_my_vacancy_by_anonymous(): void
     {
@@ -138,14 +171,9 @@ class MyVacancyApplicationControllerTest extends TestCase
 
         Storage::fake('cv');
 
-        $file = UploadedFile::fake()->create('abc.pdf', 1);
-
         TestHelper::makeVacancyWithApplication($vacancyUuid, $applicationUuid);
-        /** @var VacancyApplication $application */
         $application = VacancyApplication::find($applicationUuid);
-        $cvPath = Storage::disk('cv')->putFile($file);
-        $application->cv_path = $cvPath;
-        $application->save();
+        $cvPath = TestHelper::attachCvToApplication($application);
 
         $this->assertDatabaseHas(
             VacancyApplication::class, [
@@ -164,5 +192,29 @@ class MyVacancyApplicationControllerTest extends TestCase
         Storage::disk('cv')->assertMissing($cvPath);
 
         $this->assertDatabaseMissing(VacancyApplication::class, ['id' => $applicationUuid]);
+    }
+
+    /** @dataProvider dataDownload */
+    public function test_download(
+        \Closure $initUser,
+        string   $uuid,
+        int      $statusCode,
+        ?string  $redirectTo = null,
+    ): void
+    {
+        if ($user = $initUser()) {
+            $this->actingAs($user);
+        }
+
+        $response = $this->get("/my-vacancy-applications/{$uuid}/download")
+            ->assertStatus($statusCode);
+
+        if ($statusCode === 200) {
+            $response->assertDownload(VacancyApplication::find($uuid)->cv_path);
+        }
+
+        if ($redirectTo) {
+            $response->assertRedirect($redirectTo);
+        }
     }
 }
