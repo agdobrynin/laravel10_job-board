@@ -24,7 +24,6 @@ services:
             - sail
         depends_on:
             - pgsql
-            - redis
             - mailpit
     pgsql:
         image: 'postgres:15'
