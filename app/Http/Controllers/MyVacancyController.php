@@ -7,6 +7,8 @@ use App\Models\Employer;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use App\Services\VacancyApplicationCvStorage;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -28,8 +30,10 @@ class MyVacancyController extends Controller
 
         $vacancies = auth()->user()->employer
             ->vacancies()
+            ->withTrashed()
             ->with('employer')
-            ->withCount('vacancyApplications')
+            ->withCount([
+                'vacancyApplications' => fn(Builder $q) => $q->withTrashed()])
             ->orderBy('vacancy_applications_count', 'desc')
             ->latest()
             ->paginate($perPage);
@@ -105,7 +109,32 @@ class MyVacancyController extends Controller
     {
         $myVacancy->delete();
 
-        return to_route('my-vacancy.index')->with('success', 'Vacancy was deleted');
+        return to_route('my-vacancy.index')->with('success', 'Vacancy was archived');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @throws AuthorizationException
+     */
+    public function forceDestroy(Vacancy $myVacancy): RedirectResponse
+    {
+        $this->authorize('forceDelete', $myVacancy);
+
+        $myVacancy->forceDelete();
+
+        return to_route('my-vacancy.index')->with('success', 'Vacancy was permanent deleted');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Vacancy $myVacancy): RedirectResponse
+    {
+        $this->authorize('restore', $myVacancy);
+
+        $myVacancy->restore();
+
+        return to_route('my-vacancy.index')->with('success', 'Vacancy was restored');
     }
 
     public function download(

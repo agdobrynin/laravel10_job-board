@@ -6,6 +6,9 @@
     'footer' => null,
 ])
 <x-ui.card {{ $attributes->class(['']) }}>
+    @if($vacancy->deleted_at)
+        <del>
+    @endif
     <div class="flex justify-between">
         <h2 class="text-lg font-medium">{{ $vacancy->title }}</h2>
         <div class="text-slate-500">Salary: ${{ number_format($vacancy->salary) }}</div>
@@ -28,6 +31,9 @@
             </x-ui.tag>
         </div>
     </div>
+    @if($vacancy->deleted_at)
+        </del>
+    @endif
     @if($description)
         <p {{ $description->attributes->class(['mb-4 text-sm text-slate-500']) }}>{{ $description }}</p>
     @endif
