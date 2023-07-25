@@ -39,8 +39,7 @@ class Vacancy extends Model
             $dto->search,
             function (Builder $query, string $search) {
                 $likeOperator = $query->getConnection() instanceof PostgresConnection
-                    ? 'ilike'
-                    : 'like';
+                    ? 'ilike' : 'like';
 
                 $query->where(function (Builder $query) use ($search, $likeOperator) {
                     $query->where('title', $likeOperator, "%{$search}%")
