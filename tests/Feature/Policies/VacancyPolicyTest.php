@@ -204,4 +204,39 @@ class VacancyPolicyTest extends TestCase
         $this->assertTrue($res->denied());
         $this->assertEquals('Already applied to this vacancy', $res->message());
     }
+
+    public function test_force_delete(): void
+    {
+        $user = User::factory()->create();
+        $vacancy = Vacancy::factory()
+            ->for(Employer::factory()->for($user)->create())
+            ->create();
+
+        $res = (new VacancyPolicy())->forceDelete($user, $vacancy);
+        $this->assertTrue($res);
+    }
+
+    public function test_force_delete_by_regular_uer(): void
+    {
+        $user = User::factory()->create();
+        $vacancy = Vacancy::factory()
+            ->for(Employer::factory()->for($user)->create())
+            ->create();
+
+        $res = (new VacancyPolicy())->forceDelete(User::factory()->create(), $vacancy);
+        $this->assertFalse($res);
+    }
+
+    public function test_force_delete_by_other_employer(): void
+    {
+        $user = User::factory()->create();
+        $vacancy = Vacancy::factory()
+            ->for(Employer::factory()->for($user)->create())
+            ->create();
+
+        $otherUser = User::factory()->has(Employer::factory())->create();
+
+        $res = (new VacancyPolicy())->forceDelete($otherUser, $vacancy);
+        $this->assertFalse($res);
+    }
 }

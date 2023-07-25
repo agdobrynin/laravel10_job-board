@@ -21,7 +21,7 @@
                     <div>
                         <x-ui.link-button
                             class="text-indigo-600"
-                            :disable="!$vacancy->vacancy_applications_count"
+                            :disable="!$vacancy->vacancy_applications_count || $vacancy->deleted_at"
                             href="{{ route('my-vacancy.show', $vacancy) }}">
                             View applications
                         </x-ui.link-button>
@@ -29,19 +29,38 @@
                     <div>
                         <x-ui.link-button
                             class="text-green-600"
-                            :disable="$vacancy->vacancy_applications_count"
+                            :disable="$vacancy->vacancy_applications_count || $vacancy->deleted_at"
                             href="{{ route('my-vacancy.edit', $vacancy) }}">
                             Edit vacancy
                         </x-ui.link-button>
                     </div>
                     <div>
-                        <form action="{{ route('my-vacancy.destroy', $vacancy) }}" method="post">
+                        @if ($vacancy->deleted_at)
+                            <x-ui.link-button
+                                class="text-yellow-500"
+                                href="{{ route('my-vacancy.restore', $vacancy) }}">
+                                Restore vacancy
+                            </x-ui.link-button>
+                        @else
+                            <form action="{{ route('my-vacancy.destroy', $vacancy) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <x-ui.button
+                                    type="submit"
+                                    class="text-red-500">
+                                    Archive vacancy
+                                </x-ui.button>
+                            </form>
+                        @endif
+                    </div>
+                    <div>
+                        <form action="{{ route('my-vacancy.force_destroy', $vacancy) }}" method="post">
                             @csrf
                             @method('delete')
                             <x-ui.button
                                 type="submit"
-                                class="text-red-500">
-                                Delete vacancy
+                                class="text-fuchsia-700">
+                                Permanent delete
                             </x-ui.button>
                         </form>
                     </div>

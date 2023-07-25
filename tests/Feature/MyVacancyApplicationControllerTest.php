@@ -67,7 +67,7 @@ class MyVacancyApplicationControllerTest extends TestCase
             ->assertOk()
             ->assertSeeInOrder([
                 'My vacancies applications',
-                $user->name,
+                e($user->name),
                 'Logout',
                 'Applications to vacancies not found.'
             ], false);

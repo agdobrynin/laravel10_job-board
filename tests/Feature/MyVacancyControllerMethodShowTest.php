@@ -29,9 +29,9 @@ class MyVacancyControllerMethodShowTest extends TestCase
                 $url = Config::get('app.url');
 
                 $response->assertSeeInOrder([
-                    $vacancy->title,
+                    e($vacancy->title),
                     '$'. number_format($vacancy->salary),
-                    $vacancy->employer->name,
+                    e($vacancy->employer->name),
                     $vacancy->location,
                     'Not found applications yet',
                 ], false);
@@ -44,7 +44,13 @@ class MyVacancyControllerMethodShowTest extends TestCase
                 $response->assertSeeInOrder([
                     'action="'.$url.'/my-vacancy/'.$uuid.'" method="post">',
                     '<input type="hidden" name="_method" value="delete">',
-                    'Delete vacancy',
+                    'Archive vacancy',
+                ], false);
+
+                $response->assertSeeInOrder([
+                    'action="'.$url.'/my-vacancy/'.$uuid.'/force_destroy" method="post">',
+                    '<input type="hidden" name="_method" value="delete">',
+                    'Permanent delete',
                 ], false);
             },
         ];

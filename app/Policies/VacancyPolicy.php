@@ -58,7 +58,7 @@ class VacancyPolicy
      */
     public function restore(User $user, Vacancy $vacancy): bool
     {
-        return false;
+        return $user->employer && $vacancy->employer_id === $user->employer->id;
     }
 
     /**

@@ -8,11 +8,23 @@
 
     <x-vacancy.card :$vacancy class="mb-4">
         <x-slot:footer>
-            <form class="text-end" action="{{ route('my-vacancy.destroy', $vacancy) }}" method="post">
-                @csrf
-                @method('delete')
-                <x-ui.button type="submit" class="text-red-500">Delete vacancy</x-ui.button>
-            </form>
+            <div class="flex justify-between">
+                <form action="{{ route('my-vacancy.destroy', $vacancy) }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <x-ui.button type="submit" class="text-red-500">Archive vacancy</x-ui.button>
+                </form>
+
+                <form action="{{ route('my-vacancy.force_destroy', $vacancy) }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <x-ui.button
+                        type="submit"
+                        class="text-fuchsia-700">
+                        Permanent delete
+                    </x-ui.button>
+                </form>
+            </div>
         </x-slot:footer>
     </x-vacancy.card>
 

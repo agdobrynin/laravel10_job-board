@@ -30,7 +30,7 @@ class MyVacancyApplicationController extends Controller
     {
         $this->authorize('delete', $myVacancyApplication);
 
-        $myVacancyApplication->delete();
+        $myVacancyApplication->forceDelete();
 
         return back()->with('success', 'Your application remove');
     }

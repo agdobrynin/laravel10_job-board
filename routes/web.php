@@ -56,10 +56,21 @@ Route::middleware('auth')->group(function () {
         )->name('my-vacancy-applications.download');
 
         Route::resource('my-vacancy', MyVacancyController::class);
+
         // Download CV from application
         Route::get('my-vacancy/{my_vacancy}/download/{vacancy_application}', [MyVacancyController::class, 'download'])
             ->scopeBindings()
             ->name('my-vacancy.download');
+
+        // Restore soft deleted vacancy
+        Route::get('my-vacancy/{my_vacancy}/restore', [MyVacancyController::class, 'restore'])
+            ->withTrashed()
+            ->name('my-vacancy.restore');
+
+        // Permanent delete vacancy with related application and CV files
+        Route::delete('my-vacancy/{my_vacancy}/force_destroy', [MyVacancyController::class, 'forceDestroy'])
+            ->withTrashed()
+            ->name('my-vacancy.force_destroy');
     });
 });
 

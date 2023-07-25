@@ -22,10 +22,9 @@ class MyVacancyControllerMethodDownloadTest extends TestCase
         $applicationUuid = Str::uuid()->toString();
 
         $makeCvFile = function () {
-            Storage::fake('cv');
             $file = UploadedFile::fake()->create('abc.pdf', 1);
 
-            return Storage::disk('cv')->putFile($file);
+            return Storage::fake('cv')->putFile($file);
         };
 
         yield 'anonymous' => [
@@ -120,6 +119,8 @@ class MyVacancyControllerMethodDownloadTest extends TestCase
         ?string   $redirectTo,
     ): void
     {
+        Storage::fake('cv');
+
         if ($initUser && $actingAs = $initUser()) {
             $this->actingAs($actingAs);
         }

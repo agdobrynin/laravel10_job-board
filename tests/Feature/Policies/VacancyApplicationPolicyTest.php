@@ -41,4 +41,24 @@ class VacancyApplicationPolicyTest extends TestCase
 
         $this->assertFalse((new VacancyApplicationPolicy())->delete(User::factory()->create(), $application));
     }
+
+    public function test_force_delete(): void
+    {
+        $user = User::factory()->create();
+        $application = TestHelper::makeApplication($user);
+
+        $res = (new VacancyApplicationPolicy())->forceDelete($user, $application);
+
+        $this->assertTrue($res);
+    }
+
+    public function test_force_delete_by_other_user(): void
+    {
+        $user = User::factory()->create();
+        $application = TestHelper::makeApplication(User::factory()->create());
+
+        $res = (new VacancyApplicationPolicy())->forceDelete($user, $application);
+
+        $this->assertFalse($res);
+    }
 }

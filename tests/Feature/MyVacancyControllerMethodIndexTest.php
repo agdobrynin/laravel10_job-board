@@ -46,7 +46,8 @@ class MyVacancyControllerMethodIndexTest extends TestCase
             ->assertSee([
                 'View applications',
                 'Edit vacancy',
-                'Delete vacancy',
+                'Archive vacancy',
+                'Permanent delete',
             ], false)
             ->assertDontSee([
                 '/my-vacancy?page=1"',

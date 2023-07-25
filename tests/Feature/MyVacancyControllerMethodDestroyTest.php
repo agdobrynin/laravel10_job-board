@@ -28,6 +28,8 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
 
     public function test_destroy_with_application(): void
     {
+        Storage::fake('cv');
+
         $uuid = Str::uuid();
         $uuidApplication = Str::uuid();
 
@@ -36,9 +38,8 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
         $this->assertDatabaseHas(Vacancy::class, ['id' => $uuid]);
         $this->assertDatabaseHas(VacancyApplication::class, ['id' => $uuidApplication]);
 
-        Storage::fake('cv');
         $file = UploadedFile::fake()->create('abc.pdf', 1);
-        $path = Storage::disk('cv')->putFile($file);
+        $path = Storage::fake('cv')->putFile($file);
         VacancyApplication::find($uuidApplication)->update(['cv_path' => $path]);
         Storage::disk('cv')->assertExists($path);
 
@@ -47,10 +48,10 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
             ->assertRedirect('/my-vacancy')
             ->assertSessionHas('success');
 
-        $this->assertDatabaseMissing(Vacancy::class, ['id' => $uuid]);
-        $this->assertDatabaseMissing(VacancyApplication::class, ['id' => $uuidApplication]);
+        $this->assertSoftDeleted(Vacancy::class, ['id' => $uuid]);
+        $this->assertSoftDeleted(VacancyApplication::class, ['id' => $uuidApplication]);
 
-        Storage::disk('cv')->assertMissing($path);
+        Storage::disk('cv')->assertExists($path);
     }
 
     public function test_destroy_by_not_owner_employer(): void
@@ -80,7 +81,7 @@ class MyVacancyControllerMethodDestroyTest extends TestCase
             ->assertRedirect('/my-vacancy')
             ->assertSessionHas('success');
 
-        $this->assertDatabaseMissing(Vacancy::class, ['id' => $uuid]);
+        $this->assertSoftDeleted(Vacancy::class, ['id' => $uuid]);
     }
 
     public function test_destroy_by_user(): void

@@ -52,7 +52,7 @@ class TestHelper
     {
         $file = UploadedFile::fake()->create('abc.pdf', 1);
         /** @var VacancyApplication $application */
-        $cvPath = Storage::disk('cv')->putFile($file);
+        $cvPath = Storage::fake('cv')->putFile($file);
         $application->cv_path = $cvPath;
         $application->save();
 

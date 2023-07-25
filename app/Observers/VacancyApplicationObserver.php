@@ -12,9 +12,9 @@ class VacancyApplicationObserver
     }
 
     /**
-     * Handle the VacancyApplication "deleted" event.
+     * Handle the VacancyApplication "forceDeleted" event.
      */
-    public function deleted(VacancyApplication $vacancyApplication): void
+    public function forceDeleted(VacancyApplication $vacancyApplication): void
     {
         if ($path = $vacancyApplication->cv_path) {
             $this->cvStorage->adapter->delete($path);

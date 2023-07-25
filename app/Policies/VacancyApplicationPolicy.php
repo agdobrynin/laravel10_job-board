@@ -22,4 +22,12 @@ class VacancyApplicationPolicy
     {
         return $vacancyApplication->user_id === $user->id;
     }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, VacancyApplication $vacancyApplication): bool
+    {
+        return $vacancyApplication->user_id === $user->id;
+    }
 }
