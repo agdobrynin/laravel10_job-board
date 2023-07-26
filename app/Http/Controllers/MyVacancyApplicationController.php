@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\VacancyApplicationCvStorageInterface;
 use App\Models\VacancyApplication;
-use App\Services\VacancyApplicationCvStorage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -35,10 +35,10 @@ class MyVacancyApplicationController extends Controller
         return back()->with('success', 'Your application remove');
     }
 
-    public function download(VacancyApplication $myVacancyApplication, VacancyApplicationCvStorage $cvStorage): StreamedResponse
+    public function download(VacancyApplication $myVacancyApplication, VacancyApplicationCvStorageInterface $cvStorage): StreamedResponse
     {
         $this->authorize('view', $myVacancyApplication);
 
-        return $cvStorage->adapter->download($myVacancyApplication->cv_path);
+        return $cvStorage->adapter()->download($myVacancyApplication->cv_path);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\VacancyApplicationCvStorageInterface;
 use App\Http\Requests\VacancyRequest;
 use App\Models\Employer;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
-use App\Services\VacancyApplicationCvStorage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -138,22 +138,22 @@ class MyVacancyController extends Controller
     }
 
     public function download(
-        Vacancy                     $myVacancy,
-        VacancyApplication          $vacancyApplication,
-        VacancyApplicationCvStorage $cvStorage,
+        Vacancy                              $myVacancy,
+        VacancyApplication                   $vacancyApplication,
+        VacancyApplicationCvStorageInterface $cvStorage,
     ): StreamedResponse
     {
         $this->authorize('view', $myVacancy);
 
         $path = $vacancyApplication->cv_path;
 
-        if ($path === null || !$cvStorage->adapter->has($path)) {
+        if ($path === null || !$cvStorage->adapter()->has($path)) {
             throw new NotFoundHttpException('CV file not found for application ' . $vacancyApplication->id);
         }
 
         $ext = pathinfo($path)['extension'] ?? 'unknown';
 
-        return $cvStorage->adapter->download(
+        return $cvStorage->adapter()->download(
             $path,
             'CV letter for ' . $myVacancy->title . ' from ' . $vacancyApplication->user->name . '.' . $ext
         );

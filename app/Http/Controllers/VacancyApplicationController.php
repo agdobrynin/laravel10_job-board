@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\VacancyApplicationCvStorageInterface;
 use App\Dto\VacancyApplicationStoreDto;
 use App\Http\Requests\VacancyApplicationStoreRequest;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
 use App\Notifications\OfferFromEmployee;
-use App\Services\VacancyApplicationCvStorage;
 
 class VacancyApplicationController extends Controller
 {
     public function store(
-        VacancyApplicationStoreRequest $request,
-        Vacancy                        $vacancy,
-        VacancyApplicationCvStorage    $cvStorage,
+        VacancyApplicationStoreRequest       $request,
+        Vacancy                              $vacancy,
+        VacancyApplicationCvStorageInterface $cvStorage,
     )
     {
         $this->authorize('apply', $vacancy);
 
         $dto = new VacancyApplicationStoreDto(...$request->validated());
 
-        $cvPath = $cvStorage->adapter->putFile($dto->cv);
+        $cvPath = $cvStorage->adapter()->putFile($dto->cv);
 
         /** @var VacancyApplication $application */
         $application = $vacancy->vacancyApplications()

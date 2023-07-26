@@ -2,13 +2,13 @@
 
 namespace App\Observers;
 
+use App\Contracts\VacancyApplicationCvStorageInterface;
 use App\Models\Vacancy;
 use App\Models\VacancyApplication;
-use App\Services\VacancyApplicationCvStorage;
 
 class VacancyObserver
 {
-    public function __construct(protected VacancyApplicationCvStorage $cvStorage)
+    public function __construct(protected VacancyApplicationCvStorageInterface $cvStorage)
     {
     }
 
@@ -29,7 +29,7 @@ class VacancyObserver
         $vacancy->vacancyApplications()
             ->whereNotNull('cv_path')
             ->pluck('cv_path')
-            ->each(fn(string $path) => $this->cvStorage->adapter->delete($path));
+            ->each(fn(string $path) => $this->cvStorage->adapter()->delete($path));
     }
 
     /**
